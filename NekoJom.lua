@@ -19,6 +19,7 @@ local Tabs = {
     Script = Window:AddTab({ Title = "Script", Icon = "rbxassetid://10734907168" }),
     Fish = Window:AddTab({ Title = "Fish It", Icon = "rbxassetid://10734907168" }),
     sab = Window:AddTab({ Title = "Brainrot", Icon = "rbxassetid://10734907168" }),
+    blox = Window:AddTab({ Title = "Blox Fruits", Icon = "rbxassetid://10734907168" }),
     night = Window:AddTab({ Title = "99 Night", Icon = "rbxassetid://10734907168" }),
     Hunty = Window:AddTab({ Title = "Hunty zombie", Icon = "rbxassetid://10734907168" }),
     Players = Window:AddTab({ Title = "Players", Icon = "rbxassetid://10747373176" }),
@@ -53,6 +54,13 @@ local Jintab = {
 }
 local stiltab = {
     "LemonHub",
+    "ChilliHub",
+}
+local bloxtab = {
+    "Bonkhub",
+    "BlueXHub",
+    "VectorHub",
+    "RadzHub",
 }
 local nighttab = {
     "BonkHub",
@@ -267,6 +275,38 @@ do
         Callback = function()
             if stils == "LemonHub" then
                 loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/ffdfeadf0af798741806ea404682a938.lua"))();
+                elseif stils == "ChilliHub" then
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/tienkhanh1/spicy/main/Chilli.lua"))();
+            end
+        end
+    })
+
+    local Dropdown = Tabs.blox:AddDropdown("Dropdown", {
+        Title = "Select Scripts",
+        Values = bloxtab,
+        Multi = false,
+        Default = "เลือกสคริปต์",
+    })
+
+    --Dropdown:SetValue("four")
+
+    Dropdown:OnChanged(function(Value)
+        bloxs = Value
+    end)
+
+    Tabs.blox:AddButton({
+        Title = "Click To Execute",
+        Description = "กดเพื่อรันสคริปต์",
+        Callback = function()
+            if bloxs == "BonkHub" then
+                loadstring(game:HttpGet("https://bonkhub.online/loader.lua",true))();
+                elseif bloxs == "BlueXHub" then
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-BlueX/BlueX-Hub/refs/heads/main/Main.lua"))();
+                elseif bloxs == "VectorHub" then
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/AAwful/Vector_Hub/0/v2"))();
+                elseif bloxs == "RadzHub" then
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/tlredz/Scripts/refs/heads/main/main.luau"))();
+
             end
         end
     })
