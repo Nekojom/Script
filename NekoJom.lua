@@ -45,6 +45,7 @@ local Other = {
 local fishtab = {
     "BonkHub",
     "SpeedHubX",
+    "NatHub",
     "Chiyo",
     "Bebas",
     "JinkX",
@@ -182,6 +183,8 @@ do
                 loadstring(game:HttpGet("https://bonkhub.online/loader.lua",true))()
             elseif fishs == "SpeedHubX" then
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))();
+            elseif Scripts == "NatHub" then
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/ArdyBotzz/NatHub/refs/heads/master/NatHub.lua"))();
             elseif fishs == "Chiyo" then
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/kaisenlmao/loader/refs/heads/main/chiyo.lua"))();
             elseif fishs == "Bebas" then
