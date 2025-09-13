@@ -26,9 +26,10 @@ local Tabs = {
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 
+
+local Options = Fluent.Options
 local Plr = game:GetService("Players")
 local LocalPlr = Plr.LocalPlayer
-local Options = Fluent.Options
 local StarterGui = game:GetService("StarterGui")
 
 local Script = {
@@ -58,7 +59,7 @@ local stiltab = {
     "ChilliHub",
 }
 local bloxtab = {
-    "Bonkhub",
+    "BonkHub",
     "BlueXHub",
     "VectorHub",
     "RadzHub",
@@ -103,6 +104,11 @@ do
         end
     })
     end)
+
+    Tabs.Script:AddParagraph({
+        Title = "ScriptAll",
+        Content = "รวมScriptที่มีคีย์/ไม่มีคีย์ก็ลองทุกอันว่าอันไหนใช้ในMapได้บ้างรันขึ้นคือใช้งานได้"
+    })
 
     Tabs.Script:AddSection("[ Key / มีคีย์ ]")
 
@@ -179,11 +185,11 @@ do
         Title = "Click To Execute",
         Description = "กดเพื่อรันสคริปต์",
         Callback = function()
-            if fishs == "Bonkhub" then
-                loadstring(game:HttpGet("https://bonkhub.online/loader.lua",true))()
+            if fishs == "BonkHub" then
+                loadstring(game:HttpGet("https://bonkhub.online/loader.lua",true))();
             elseif fishs == "SpeedHubX" then
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))();
-            elseif Scripts == "NatHub" then
+            elseif fishs == "NatHub" then
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/ArdyBotzz/NatHub/refs/heads/master/NatHub.lua"))();
             elseif fishs == "Chiyo" then
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/kaisenlmao/loader/refs/heads/main/chiyo.lua"))();
@@ -337,10 +343,10 @@ do
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))();
             elseif nights == "VectorHub" then
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/AAwful/Vector_Hub/0/v2"))();
-            elseif nights == "NatHub" then
+            elseif nights == "NutHub" then
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/ArdyBotzz/NatHub/refs/heads/master/NatHub.lua"))();
             elseif nights == "Somtank" then
-                loadstring(game:HttpGet("https://pastebin.com/raw/zyy57X37"))()
+                loadstring(game:HttpGet("https://pastebin.com/raw/zyy57X37"))();
             elseif nights == "H4xScripts" then
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua", true))()
 
@@ -461,27 +467,27 @@ do
             LocalPlr.Character.Humanoid.JumpPower = Jump
         end
     })
-end
 
-Tabs.Players:AddButton({
-    Title = "Toggle Infinite Jump",
-    Description = "กดเพื่อเปิด/ปิด กระโดดไม่จำกัด",
-    Callback = function()
-        InfiniteJumpEnabled = not InfiniteJumpEnabled
-        pcall(function()
-            StarterGui:SetCore("SendNotification", {
-                Title = "Infinite Jump",
-                Text = InfiniteJumpEnabled and "เปิดใช้งานแล้ว" or "ปิดการใช้งานแล้ว",
-                Duration = 2
-            })
-        end)
-    end
-})
-game:GetService("UserInputService").JumpRequest:Connect(function()
-    if InfiniteJumpEnabled then
-        LocalPlr.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
-    end
-end)
+    Tabs.Players:AddButton({
+            Title = "Toggle Infinite Jump",
+            Description = "กดเพื่อเปิด/ปิด กระโดดไม่จำกัด",
+            Callback = function()
+                InfiniteJumpEnabled = not InfiniteJumpEnabled
+                pcall(function()
+                    StarterGui:SetCore("SendNotification", {
+                        Title = "Infinite Jump",
+                        Text = InfiniteJumpEnabled and "เปิดใช้งานแล้ว" or "ปิดการใช้งานแล้ว",
+                        Duration = 2
+                    })
+                end)
+            end
+        })
+        game:GetService("UserInputService").JumpRequest:Connect(function()
+        if InfiniteJumpEnabled then
+            LocalPlr.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
+        end
+    end)
+end
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
