@@ -178,7 +178,7 @@ do
         Title = "Click To Execute",
         Description = "กดเพื่อรันสคริปต์",
         Callback = function()
-            if fishs == "BONKHUB" then
+            if fishs == "Bonkhub" then
                 loadstring(game:HttpGet("https://bonkhub.online/loader.lua",true))();
             elseif fishs == "SpeedHubX" then
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))();
