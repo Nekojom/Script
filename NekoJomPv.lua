@@ -109,7 +109,7 @@ do
 
     local Dropdown = Tabs.Misc:AddDropdown("Dropdown", {
         Title = "Select Scripts",
-        Values = Misc,
+        Values = Other,
         Multi = false,
         Default = "เลือกสคริปต์",
     })
@@ -136,7 +136,7 @@ do
 
     local Dropdown = Tabs.Misc:AddDropdown("Dropdown", {
         Title = "Select Scripts",
-        Values = Misc,
+        Values = Graphics,
         Multi = false,
         Default = "เลือกสคริปต์",
     })
