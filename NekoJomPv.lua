@@ -29,7 +29,7 @@ local Plr = game:GetService("Players")
 local LocalPlr = Plr.LocalPlayer
 local StarterGui = game:GetService("StarterGui")
 
-local Script = {"LemonHub", "BlueXHub", "SpeedHubX", "NatHub","BonkHub","Chiyo","Bebas","JinkX","VectorHub","H4xScripts","Zeehub","Eps1llonHub",}
+local Script = {"BonkHub","LemonHub", "BlueXHub", "SpeedHubX", "NatHub","Chiyo","Bebas","JinkX","VectorHub","H4xScripts","Zeehub","RedzHub","Eps1llonHub",}
 local Other = {"Fiy", "Anti AFK", "infiniteyield",}
 local Graphics = {"RTX", "Pshadeultimate",}
 local Boots = {"FPS",}
@@ -102,6 +102,8 @@ do
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua", true))()
             elseif Scripts == "Zeehub" then
                 loadstring(game:HttpGet("https://zuwz.me/Ls-Zee-Hub-HZ"))();
+            elseif Scripts == "RedzHub" then
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/tlredz/Scripts/refs/heads/main/main.luau"))()
             elseif Scripts == "Eps1llonHub" then
                 loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/083f208b2d5d19c6b565190b0d2293c9.lua"))()
             end
