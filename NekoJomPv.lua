@@ -36,7 +36,7 @@ do
     pcall(function()
     Tabs.Home:AddParagraph({
         Title = "Script ส่วนตัว",
-        Content = "ทำไว้ใช้เองขำๆ\nรวมสคลิปไว้ใช้เอง\nBy Nekojom"
+        Content = "ทำไว้ใช้เองขำๆรวมสคลิปไว้ใช้เอง\nBy Nekojom"
     })
 
     Tabs.Home:AddButton({
