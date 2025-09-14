@@ -32,6 +32,7 @@ local StarterGui = game:GetService("StarterGui")
 local Script = {"LemonHub", "BlueXHub", "SpeedHubX", "NatHub","BonkHub","Chiyo","Bebas","JinkX","VectorHub","H4xScripts","Zeehub","Eps1llonHub",}
 local Other = {"Fiy", "Anti AFK", "infiniteyield",}
 local Graphics = {"RTX43523", "Pshadeultimate",}
+local Boots = {"RTX43523", "Pshadeultimate",}
 
 do
     pcall(function()
@@ -158,6 +159,30 @@ do
             end
         end
     })
+
+    Tabs.Misc:AddSection("[ Boots FPS ]")
+
+    local Dropdown = Tabs.Misc:AddDropdown("Dropdown", {
+        Title = "Select Scripts",
+        Values = Boots,
+        Multi = false,
+        Default = "เลือกสคริปต์",
+    })
+
+    Dropdown:OnChanged(function(Value)
+        Bootss = Value
+    end)
+
+    Tabs.Misc:AddButton({
+        Title = "Click To Execute",
+        Description = "กดเพื่อรันสคริปต์",
+        Callback = function()
+            if Bootss == "FPS" then
+                loadstring(game:HttpGet("https://pastebin.com/raw/8YZ2cc6V"))()
+            end
+        end
+    })
+
 
     Tabs.Players:AddSection("[ Speed / ความเร็ว ]")
 
