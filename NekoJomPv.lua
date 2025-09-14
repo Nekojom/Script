@@ -118,7 +118,7 @@ do
         Others = Value
     end)
 
-    Tabs.Script:AddButton({
+    Tabs.Misc:AddButton({
         Title = "Click To Execute",
         Description = "กดเพื่อรันสคริปต์",
         Callback = function()
@@ -145,7 +145,7 @@ do
         Graphicss = Value
     end)
 
-    Tabs.Script:AddButton({
+    Tabs.Misc:AddButton({
         Title = "Click To Execute",
         Description = "กดเพื่อรันสคริปต์",
         Callback = function()
