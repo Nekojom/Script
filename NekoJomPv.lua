@@ -107,7 +107,7 @@ do
 
     Tabs.Misc:AddSection("[ Other / อื่นๆ ]")
 
-    local Dropdown = Tabs.Misc:AddDropdown("Dropdown", {
+    local Dropdown = Tabs.Other:AddDropdown("Dropdown", {
         Title = "Select Scripts",
         Values = Other,
         Multi = false,
@@ -134,7 +134,7 @@ do
 
     Tabs.Misc:AddSection("[ Graphics / กราฟิก ]")
 
-    local Dropdown = Tabs.Misc:AddDropdown("Dropdown", {
+    local Dropdown = Tabs.Graphics:AddDropdown("Dropdown", {
         Title = "Select Scripts",
         Values = Graphics,
         Multi = false,
