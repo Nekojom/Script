@@ -18,6 +18,7 @@ local Tabs = {
     Home = Window:AddTab({ Title = "Home", Icon = "home" }),
     Script = Window:AddTab({ Title = "Script", Icon = "rbxassetid://10734907168" }),
     Players = Window:AddTab({ Title = "Players", Icon = "rbxassetid://10747373176" }),
+    Misc = Window:AddTab({ Title = "Misc", Icon = "star" }),
     TP = Window:AddTab({ Title = "Teleport", Icon = "rbxassetid://10709775894" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
@@ -36,7 +37,7 @@ do
     pcall(function()
     Tabs.Home:AddParagraph({
         Title = "Script ส่วนตัว",
-        Content = "ทำไว้ใช้เองขำๆรวมสคลิปไว้ใช้เอง\nBy Nekojom"
+        Content = "ทำไว้ใช้เองขำๆรวมสคริปต์ไว้ใช้เอง\nBy Nekojom"
     })
 
     Tabs.Home:AddButton({
@@ -104,9 +105,9 @@ do
         end
     })
 
-    Tabs.Script:AddSection("[ Other / อื่นๆ ]")
+    Tabs.Misc:AddSection("[ Other / อื่นๆ ]")
 
-    local Dropdown = Tabs.Script:AddDropdown("Dropdown", {
+    local Dropdown = Tabs.Misc:AddDropdown("Dropdown", {
         Title = "Select Scripts",
         Values = Other,
         Multi = false,
@@ -131,9 +132,9 @@ do
         end
     })
 
-    Tabs.Script:AddSection("[ Graphics / กราฟิก ]")
+    Tabs.Misc:AddSection("[ Graphics / กราฟิก ]")
 
-    local Dropdown = Tabs.Script:AddDropdown("Dropdown", {
+    local Dropdown = Tabs.Misc:AddDropdown("Dropdown", {
         Title = "Select Scripts",
         Values = Graphics,
         Multi = false,
@@ -148,7 +149,7 @@ do
         Title = "Click To Execute",
         Description = "กดเพื่อรันสคริปต์",
         Callback = function()
-            if Graphicss == "RTX43523" then
+            if Graphicss == "RTX" then
                 loadstring(game:HttpGet("https://rawscripts.net/raw/Just-a-baseplate.-Script-de-RTX-43523"))();
             elseif Graphicss == "Pshadeultimate" then
                 loadstring(game:HttpGet('https://raw.githubusercontent.com/randomstring0/pshade-ultimate/refs/heads/main/src/cd.lua'))();
