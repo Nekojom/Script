@@ -31,8 +31,8 @@ local StarterGui = game:GetService("StarterGui")
 
 local Script = {"LemonHub", "BlueXHub", "SpeedHubX", "NatHub","BonkHub","Chiyo","Bebas","JinkX","VectorHub","H4xScripts","Zeehub","Eps1llonHub",}
 local Other = {"Fiy", "Anti AFK", "infiniteyield",}
-local Graphics = {"RTX43523", "Pshadeultimate",}
-local Boots = {"RTX43523", "Pshadeultimate",}
+local Graphics = {"RTX", "Pshadeultimate",}
+local Boots = {"FPS",}
 
 do
     pcall(function()
