@@ -18,6 +18,7 @@ local Tabs = {
     Home = Window:AddTab({ Title = "Home", Icon = "home" }),
     Script = Window:AddTab({ Title = "Script", Icon = "rbxassetid://10734907168" }),
     Players = Window:AddTab({ Title = "Players", Icon = "rbxassetid://10747373176" }),
+    TP = Window:AddTab({ Title = "Teleport", Icon = "rbxassetid://10709775894" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 
@@ -34,8 +35,8 @@ local Graphics = {"RTX43523", "Pshadeultimate",}
 do
     pcall(function()
     Tabs.Home:AddParagraph({
-        Title = "Welcome To My Script",
-        Content = "หากสคริปต์ไหนใช้ไม่ได้โปรดติดต่อที่ดิสคอร์ดด้านล่าง\nหรืออยากให้เพิ่มสคริปต์ไหนก็สามารถแจ้งได้ที่ Discord ด้านล่าง\nCode By Khaotom"
+        Title = "Script ส่วนตัว",
+        Content = "ทำไว้ใช้เองขำๆ\nรวมสคลิปไว้ใช้เอง\nBy Nekojom"
     })
 
     Tabs.Home:AddButton({
@@ -225,6 +226,17 @@ do
         end
     end)
 end
+
+    Tabs.TP:AddSection("[ Teleport / วาป ]")
+
+    Tabs.TP:AddButton({
+        Title = "Teleport To Shop Seeds",
+        Description = "วาปไปที่ขายเมล็ด",
+        Callback = function()
+            LocalPlr.Character.HumanoidRootPart.CFrame = CFrame.new(86.5790176, 2.99999976, -27.0039711, 0.00114052149, -4.75095341e-08, -0.999999344, -1.16310509e-12, 1, -4.75095661e-08, 0.999999344, 5.53487881e-11, 0.00114052149)
+        end
+    })
+
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
