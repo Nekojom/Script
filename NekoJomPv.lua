@@ -136,7 +136,7 @@ do
             elseif Others == "Anti AFK" then
                 loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostSobe/Script/refs/heads/main/antiafk'))();
             elseif Others == "infiniteyield" then
-                loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostSobe/Script/refs/heads/main/infiniteyield'))();
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/infiniteyield'))();
             end
         end
     })
