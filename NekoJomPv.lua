@@ -32,7 +32,6 @@ local StarterGui = game:GetService("StarterGui")
 local Script = {"BonkHub","MaruHub","LemonHub","BlueXHub", "SpeedHubX", "NatHub","Chiyo","Bebas","JinkX","VectorHub","H4xScripts","Zeehub","RedzHub","Eps1llonHub",}
 local Other = {"Fiy", "AntiAFK", "infiniteyield",}
 local Graphics = {"RTX", "Pshadeultimate",}
-local Noclip = {"Noclip",}
 
 do
     pcall(function()
@@ -187,19 +186,19 @@ do
         end
     })
 
-    Tabs.Misc:AddToggle("NoclipToggle", {
+    Tabs.Players:AddToggle("NoclipToggle", {
         Title = "Noclip",
         Default = false,
         Description = "กดเพื่อทลุทุกอย่าง",
         Callback = function(state)
-            FPSBootsEnabled = state
+            NoclipEnabled = state
             if state then
                 -- เปิด Noclip
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))();
-                print("FPS Boots เปิดใช้งานแล้ว")
+                print("Noclip เปิดใช้งานแล้ว")
             else
                 -- ปิด Noclip (ถ้ามีวิธีปิด)
-                print("FPS Boots ปิดการใช้งานแล้ว")
+                print("Noclip ปิดการใช้งานแล้ว")
             end
         end
     })
