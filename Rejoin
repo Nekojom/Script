@@ -1,0 +1,4 @@
+task.wait(getgenv().Delay)
+game:GetService("Players").LocalPlayer:Kick("\nRejoining...")
+task.wait(1.5)
+game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, getgenv().JobId)
