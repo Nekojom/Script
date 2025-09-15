@@ -193,7 +193,7 @@ do
 
     local Dropdown = Tabs.Players:AddDropdown("Dropdown", {
         Title = "Select Scripts",
-        Values = Boots,
+        Values = Noclip,
         Multi = false,
         Default = "เลือกสคริปต์",
     })
@@ -206,7 +206,7 @@ do
         Title = "Click To Execute",
         Description = "กดเพื่อรันสคริปต์",
         Callback = function()
-            if Bootss == "Noclip" then
+            if Noclips == "Noclip" then
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))()
             end
         end
