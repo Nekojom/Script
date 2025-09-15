@@ -168,14 +168,24 @@ do
 
     Tabs.Misc:AddSection("[ FPS Boots ]")
 
-    Tabs.Misc:AddButton({
+    local FPSBootsEnabled = false
+
+    Tabs.Misc:AddToggle("FPSBootsToggle", {
         Title = "FPS Boots",
-        Description = "Very important button",
-        Callback = function()
-            loadstring(game:HttpGet("https://pastebin.com/raw/8YZ2cc6V"))();
+        Default = false,
+        Description = "Very important toggle",
+        Callback = function(state)
+            FPSBootsEnabled = state
+            if state then
+                -- เปิด FPS Boots
+                loadstring(game:HttpGet("https://pastebin.com/raw/8YZ2cc6V"))();
+                print("FPS Boots เปิดใช้งานแล้ว")
+            else
+                -- ปิด FPS Boots (ถ้ามีวิธีปิด)
+                print("FPS Boots ปิดการใช้งานแล้ว")
+            end
         end
     })
-
 
     Tabs.Players:AddSection("[ Noclip ]")
 
