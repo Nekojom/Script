@@ -32,7 +32,6 @@ local StarterGui = game:GetService("StarterGui")
 local Script = {"BonkHub","MaruHub","LemonHub","BlueXHub", "SpeedHubX", "NatHub","Chiyo","Bebas","JinkX","VectorHub","H4xScripts","Zeehub","RedzHub","Eps1llonHub",}
 local Other = {"Fiy", "AntiAFK", "infiniteyield",}
 local Graphics = {"RTX", "Pshadeultimate",}
-local Boots = {"FPS",}
 local Noclip = {"Noclip",}
 
 do
@@ -167,9 +166,9 @@ do
         end
     })
 
-    Tabs.Misc:AddSection("[ Boots FPS ]")
+    Tabs.Misc:AddSection("[ FPS Boots ]")
 
-    Tabs.Main:AddButton({
+    Tabs.Misc:AddButton({
         Title = "FPS Boots",
         Description = "Very important button",
         Callback = function()
