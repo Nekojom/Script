@@ -29,7 +29,7 @@ local Plr = game:GetService("Players")
 local LocalPlr = Plr.LocalPlayer
 local StarterGui = game:GetService("StarterGui")
 
-local Script = {"BonkHub","LemonHub", "BlueXHub", "SpeedHubX", "NatHub","Chiyo","Bebas","JinkX","VectorHub","H4xScripts","Zeehub","RedzHub","Eps1llonHub",}
+local Script = {"BonkHub","MaruHub","LemonHub","BlueXHub", "SpeedHubX", "NatHub","Chiyo","Bebas","JinkX","VectorHub","H4xScripts","Zeehub","RedzHub","Eps1llonHub",}
 local Other = {"Fiy", "Anti AFK", "infiniteyield",}
 local Graphics = {"RTX", "Pshadeultimate",}
 local Boots = {"FPS",}
@@ -82,6 +82,10 @@ do
                 getgenv().Key = "BONKHUB-9623288E740C"
                 getgenv().DiscordId = "855388945419993119"
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/Toonza555/Project/refs/heads/main/PremiumLoader.lua", true))()
+            elseif Scripts == "MaruHub" then
+                getgenv().Key = "MARU-SC3UI-M6UG-8HMZ-OZ9AL-GGXMW"
+                getgenv().id = "754329983861784588"
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/xshiba/MaruBitkub/main/Mobile.lua"))()
             elseif Scripts == "LemonHub" then
                 loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/ffdfeadf0af798741806ea404682a938.lua"))();
             elseif Scripts == "BlueXHub" then
