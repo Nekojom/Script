@@ -194,7 +194,7 @@ do
 
     local Dropdown = Tabs.Players:AddDropdown("Dropdown", {
         Title = "Select Scripts",
-        Values = Noclips,
+        Values = Noclip,
         Multi = false,
         Default = "เลือกสคริปต์",
     })
