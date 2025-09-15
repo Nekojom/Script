@@ -167,28 +167,39 @@ do
         end
     })
 
-    Tabs.Misc:AddSection("[ Boots FPS ]")
+Tabs.Misc:AddSection("[ Boots FPS ]")
 
-    local Dropdown = Tabs.Misc:AddDropdown("Dropdown", {
-        Title = "Select Scripts",
-        Values = Boots,
-        Multi = false,
-        Default = "เลือกสคริปต์",
-    })
+local Dropdown = Tabs.Misc:AddDropdown("Dropdown", {
+    Title = "Select Scripts",
+    Values = Boots,
+    Multi = false,
+    Default = "เลือกสคริปต์",
+})
 
-    Dropdown:OnChanged(function(Value)
-        Bootss = Value
-    end)
+Dropdown:OnChanged(function(Value)
+    Bootss = Value
+end)
 
-    Tabs.Misc:AddButton({
-        Title = "Click To Execute",
-        Description = "กดเพื่อรันสคริปต์",
-        Callback = function()
-            if Bootss == "FPS" then
+-- ทำ Toggle แทนปุ่ม
+Tabs.Misc:AddToggle("BootsFPSToggle", {
+    Title = "Boots FPS",
+    Default = false,
+    Description = "เปิด/ปิด สคริปต์ FPS",
+    Callback = function(state)
+        if Bootss == "FPS" then
+            if state then
+                -- เปิด Boots FPS
+                print("Boots FPS เปิดใช้งาน")
                 loadstring(game:HttpGet("https://pastebin.com/raw/8YZ2cc6V"))()
+            else
+                -- ปิด Boots FPS
+                print("Boots FPS ปิดการใช้งาน")
+                -- ใส่โค้ดปิด FPS ที่นี่
             end
         end
-    })
+    end
+})
+
 
     Tabs.Players:AddSection("[ Noclip ]")
 
