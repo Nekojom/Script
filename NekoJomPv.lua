@@ -17,7 +17,7 @@ local Window = Fluent:CreateWindow({
 local Tabs = {
     Home = Window:AddTab({ Title = "Home", Icon = "home" }),
     Script = Window:AddTab({ Title = "Script", Icon = "rbxassetid://10734907168" }),
-    Players = Window:AddTab({ Title = "Players", Icon = "rbxassetid://10747373176" }),
+    Player = Window:AddTab({ Title = "Player", Icon = "rbxassetid://10747373176" }),
     Misc = Window:AddTab({ Title = "Misc", Icon = "star" }),
     TP = Window:AddTab({ Title = "Teleport", Icon = "rbxassetid://10709775894" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
@@ -186,9 +186,9 @@ do
         end
     })
 
-    Tabs.Players:AddSection("[ Speed / ความเร็ว ]")
+    Tabs.Player:AddSection("[ Speed / ความเร็ว ]")
 
-    local Input = Tabs.Players:AddInput("Input", {
+    local Input = Tabs.Player:AddInput("Input", {
         Title = "WalkSpeed",
         Default = "20",
         Placeholder = "",
@@ -203,7 +203,7 @@ do
         --print("Set Speed :", Input.Value)
     end)
     
-    Tabs.Players:AddButton({
+    Tabs.Player:AddButton({
         Title = "Set WalkSpeed",
         Description = "กดเพื่อเปลี่ยนความเร็ว",
         Callback = function()
@@ -211,9 +211,9 @@ do
         end
     })
 
-    Tabs.Players:AddSection("[ Jump / กระโดด ]")
+    Tabs.Player:AddSection("[ Jump / กระโดด ]")
 
-    local Input = Tabs.Players:AddInput("Input", {
+    local Input = Tabs.Player:AddInput("Input", {
         Title = "JumpPower",
         Default = "50",
         Placeholder = "",
@@ -228,7 +228,7 @@ do
         --print("Set Speed :", Input.Value)
     end)
 
-    Tabs.Players:AddButton({
+    Tabs.Player:AddButton({
         Title = "Set JumpPower",
         Description = "กดเพื่อเปลี่ยนพลังกระโดด",
         Callback = function()
@@ -236,7 +236,7 @@ do
         end
     })
 
-    Tabs.Players:AddToggle("InfiniteJumpToggle", {
+    Tabs.Player:AddToggle("InfiniteJumpToggle", {
     Title = "Infinite Jump",
     Default = false,
     Description = "เปิด/ปิด กระโดดไม่จำกัด",
@@ -260,10 +260,10 @@ do
     end)
 end
 
-    Tabs.Players:AddToggle("NoclipToggle", {
-            Title = "Noclip",
+    Tabs.Player:AddToggle("NoclipToggle", {
+            Title = "No clip",
             Default = false,
-            Description = "กดเพื่อทลุทุกอย่าง",
+            Description = "กดเพื่อทะลุทุกอย่าง",
             Callback = function(state)
                 NoclipEnabled = state
                 if state then
