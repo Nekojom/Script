@@ -192,23 +192,32 @@ do
 
     Tabs.Players:AddSection("[ Noclip ]")
 
-    local Dropdown = Tabs.Players:AddDropdown("Dropdown", {
-        Title = "Select Scripts",
-        Values = Noclip,
-        Multi = false,
-        Default = "เลือกสคริปต์",
-    })
+local Dropdown = Tabs.Players:AddDropdown("Dropdown", {
+    Title = "Select Scripts",
+    Values = Noclip,
+    Multi = false,
+    Default = "เลือกสคริปต์",
+})
 
     Dropdown:OnChanged(function(Value)
         Noclips = Value
     end)
 
-    Tabs.Players:AddButton({
-        Title = "Click To Execute",
-        Description = "กดเพื่อรันสคริปต์",
-        Callback = function()
+    Tabs.Players:AddToggle("NoclipToggle", {
+        Title = "Noclip",
+        Default = false,
+        Description = "เปิด/ปิด สคริปต์ที่เลือก",
+        Callback = function(state)
             if Noclips == "Noclip" then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))()
+                if state then
+                    -- เปิด Noclip
+                    print("Noclip เปิดใช้งาน")
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))();
+                else
+                    -- ปิด Noclip
+                    print("Noclip ปิดการใช้งาน")
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))();
+                end
             end
         end
     })
