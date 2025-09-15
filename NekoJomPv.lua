@@ -33,6 +33,7 @@ local Script = {"BonkHub","MaruHub","LemonHub","BlueXHub", "SpeedHubX", "NatHub"
 local Other = {"Fiy", "AntiAFK", "infiniteyield",}
 local Graphics = {"RTX", "Pshadeultimate",}
 local Boots = {"FPS",}
+local Noclip = {"Noclip",}
 
 do
     pcall(function()
@@ -193,13 +194,13 @@ do
 
     local Dropdown = Tabs.Players:AddDropdown("Dropdown", {
         Title = "Select Scripts",
-        Values = Noclip,
+        Values = Noclips,
         Multi = false,
         Default = "เลือกสคริปต์",
     })
 
     Dropdown:OnChanged(function(Value)
-        Bootss = Value
+        Noclips = Value
     end)
 
     Tabs.Players:AddButton({
