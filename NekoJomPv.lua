@@ -30,7 +30,7 @@ local LocalPlr = Plr.LocalPlayer
 local StarterGui = game:GetService("StarterGui")
 
 local Script = {"BonkHub","MaruHub","LemonHub","BlueXHub", "SpeedHubX", "NatHub","Chiyo","Bebas","JinkX","VectorHub","H4xScripts","Zeehub","RedzHub","Eps1llonHub",}
-local Other = {"Fiy", "Anti AFK", "infiniteyield",}
+local Other = {"Fiy", "AntiAFK", "infiniteyield",}
 local Graphics = {"RTX", "Pshadeultimate",}
 local Boots = {"FPS",}
 
@@ -132,9 +132,9 @@ do
         Description = "กดเพื่อรันสคริปต์",
         Callback = function()
             if Others == "Fiy" then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/GhostSobe/Script/refs/heads/main/Fly"))();
-            elseif Others == "Anti AFK" then
-                loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostSobe/Script/refs/heads/main/antiafk'))();
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Fly"))();
+            elseif Others == "AntiAFK" then
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/antiafk'))();
             elseif Others == "infiniteyield" then
                 loadstring(game:HttpGet('https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/infiniteyield'))();
             end
