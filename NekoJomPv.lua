@@ -273,23 +273,26 @@ local Dropdown = Tabs.Players:AddDropdown("Dropdown", {
         end
     })
 
-    Tabs.Players:AddButton({
-            Title = "Toggle Infinite Jump",
-            Description = "กดเพื่อเปิด/ปิด กระโดดไม่จำกัด",
-            Callback = function()
-                InfiniteJumpEnabled = not InfiniteJumpEnabled
-                pcall(function()
-                    StarterGui:SetCore("SendNotification", {
-                        Title = "Infinite Jump",
-                        Text = InfiniteJumpEnabled and "เปิดใช้งานแล้ว" or "ปิดการใช้งานแล้ว",
-                        Duration = 2
-                    })
-                end)
-            end
-        })
-        game:GetService("UserInputService").JumpRequest:Connect(function()
-        if InfiniteJumpEnabled then
-            LocalPlr.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
+    Tabs.Players:AddToggle("InfiniteJumpToggle", {
+    Title = "Infinite Jump",
+    Default = false,
+    Description = "เปิด/ปิด กระโดดไม่จำกัด",
+    Callback = function(state)
+        InfiniteJumpEnabled = state
+        pcall(function()
+            StarterGui:SetCore("SendNotification", {
+                Title = "Infinite Jump",
+                Text = state and "เปิดใช้งานแล้ว" or "ปิดการใช้งานแล้ว",
+                Duration = 2
+            })
+        end)
+    end
+})
+
+    -- เชื่อมการกดกระโดดเข้ากับฟังก์ชัน
+    game:GetService("UserInputService").JumpRequest:Connect(function()
+        if InfiniteJumpEnabled and LocalPlr.Character and LocalPlr.Character:FindFirstChildOfClass("Humanoid") then
+            LocalPlr.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
         end
     end)
 end
