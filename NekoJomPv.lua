@@ -189,6 +189,29 @@ do
         end
     })
 
+    Tabs.Players:AddSection("[ Noclip ]")
+
+    local Dropdown = Tabs.Players:AddDropdown("Dropdown", {
+        Title = "Select Scripts",
+        Values = Boots,
+        Multi = false,
+        Default = "เลือกสคริปต์",
+    })
+
+    Dropdown:OnChanged(function(Value)
+        Bootss = Value
+    end)
+
+    Tabs.Players:AddButton({
+        Title = "Click To Execute",
+        Description = "กดเพื่อรันสคริปต์",
+        Callback = function()
+            if Bootss == "Noclip" then
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))()
+            end
+        end
+    })
+
 
     Tabs.Players:AddSection("[ Speed / ความเร็ว ]")
 
