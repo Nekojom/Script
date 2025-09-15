@@ -186,23 +186,6 @@ do
         end
     })
 
-    Tabs.Players:AddToggle("NoclipToggle", {
-        Title = "Noclip",
-        Default = false,
-        Description = "กดเพื่อทลุทุกอย่าง",
-        Callback = function(state)
-            NoclipEnabled = state
-            if state then
-                -- เปิด Noclip
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))();
-                print("Noclip เปิดใช้งานแล้ว")
-            else
-                -- ปิด Noclip (ถ้ามีวิธีปิด)
-                print("Noclip ปิดการใช้งานแล้ว")
-            end
-        end
-    })
-
     Tabs.Players:AddSection("[ Speed / ความเร็ว ]")
 
     local Input = Tabs.Players:AddInput("Input", {
@@ -276,6 +259,24 @@ do
         end
     end)
 end
+
+    Tabs.Players:AddToggle("NoclipToggle", {
+            Title = "Noclip",
+            Default = false,
+            Description = "กดเพื่อทลุทุกอย่าง",
+            Callback = function(state)
+                NoclipEnabled = state
+                if state then
+                    -- เปิด Noclip
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))();
+                    print("Noclip เปิดใช้งานแล้ว")
+                else
+                    -- ปิด Noclip (ถ้ามีวิธีปิด)
+                    print("Noclip ปิดการใช้งานแล้ว")
+                end
+            end
+        })
+
 
     Tabs.TP:AddSection("[ Teleport / วาป ]")
 
