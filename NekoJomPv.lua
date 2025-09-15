@@ -173,7 +173,7 @@ do
     Tabs.Misc:AddToggle("FPSBootsToggle", {
         Title = "FPS Boots",
         Default = false,
-        Description = "Very important toggle",
+        Description = "กดเพื่อลดแลค เพิ่มFPS",
         Callback = function(state)
             FPSBootsEnabled = state
             if state then
@@ -187,38 +187,22 @@ do
         end
     })
 
-    Tabs.Players:AddSection("[ Noclip ]")
-
-    local Dropdown = Tabs.Players:AddDropdown("Dropdown", {
-        Title = "Select Scripts",
-        Values = Noclip,
-        Multi = false,
-        Default = "เลือกสคริปต์",
-    })
-
-        Dropdown:OnChanged(function(Value)
-            Noclips = Value
-        end)
-
-    Tabs.Players:AddToggle("NoclipToggle", {
+    Tabs.Misc:AddToggle("NoclipToggle", {
         Title = "Noclip",
         Default = false,
-        Description = "เปิด/ปิด สคริปต์ที่เลือก",
+        Description = "กดเพื่อทลุทุกอย่าง",
         Callback = function(state)
-            if Noclips == "Noclip" then
-                if state then
-                    -- เปิด Noclip
-                    print("Noclip เปิดใช้งาน")
-                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))();
-                else
-                    -- ปิด Noclip
-                    print("Noclip ปิดการใช้งาน")
-                    -- คุณอาจต้องการเพิ่มโค้ดเพื่อปิด Noclip ที่นี่
-                end
+            FPSBootsEnabled = state
+            if state then
+                -- เปิด Noclip
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))();
+                print("FPS Boots เปิดใช้งานแล้ว")
+            else
+                -- ปิด Noclip (ถ้ามีวิธีปิด)
+                print("FPS Boots ปิดการใช้งานแล้ว")
             end
         end
     })
-
 
     Tabs.Players:AddSection("[ Speed / ความเร็ว ]")
 
