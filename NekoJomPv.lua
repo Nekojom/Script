@@ -216,7 +216,7 @@ local Dropdown = Tabs.Players:AddDropdown("Dropdown", {
                 else
                     -- ปิด Noclip
                     print("Noclip ปิดการใช้งาน")
-                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))();
+                    -- คุณอาจต้องการเพิ่มโค้ดเพื่อปิด Noclip ที่นี่
                 end
             end
         end
