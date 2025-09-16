@@ -1,38 +1,24 @@
--- Noclip.lua (สำหรับ Toggle ใช้งานได้ตลอด)
-if not getgenv then getgenv = _G end
-getgenv().NoclipEnabled = getgenv().NoclipEnabled or false
+local Noclip = nil
+local Clip = nil
 
-local NoclipConnection = nil
-
-local function noclip()
-    if NoclipConnection then return end
-    getgenv().NoclipEnabled = true
-    NoclipConnection = game:GetService("RunService").Stepped:Connect(function()
-        if getgenv().NoclipEnabled and game.Players.LocalPlayer.Character then
-            for _, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-                if v:IsA("BasePart") and v.CanCollide then
-                    v.CanCollide = false
-                end
-            end
-        end
-    end)
+function noclip()
+	Clip = false
+	local function Nocl()
+		if Clip == false and game.Players.LocalPlayer.Character ~= nil then
+			for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+				if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
+					v.CanCollide = false
+				end
+			end
+		end
+		wait(0.21) -- basic optimization
+	end
+	Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
 end
 
-local function clip()
-    getgenv().NoclipEnabled = false
-    if NoclipConnection then
-        NoclipConnection:Disconnect()
-        NoclipConnection = nil
-    end
+function clip()
+	if Noclip then Noclip:Disconnect() end
+	Clip = true
 end
 
--- ฟังก์ชันที่ Toggle จะเรียก
-getgenv().ToggleNoclip = function(state)
-    if state then
-        noclip()
-        print("Noclip เปิดแล้ว")
-    else
-        clip()
-        print("Noclip ปิดแล้ว")
-    end
-end
+noclip() -- to toggle noclip() and clip()
