@@ -325,35 +325,20 @@ do
     end)
 end
 
-    Tabs.Player:AddToggle("PlayerEspToggle", {
-        Title = "PlayerEsp",
+    Tabs.Player:AddToggle("NoclipToggle", {
+        Title = "Noclip",
         Default = false,
         Description = "เปิดเพื่อดูชื่อบนหัว",
         Callback = function(state)
-            getgenv().PlayerEspEnabled = state
+            getgenv().NoclipEnabled = state
             if state then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/PlayerEsp"))();
-                print("PlayerEsp เปิดใช้งานแล้ว")
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))();
+                print("Noclip เปิดใช้งานแล้ว")
             else
-                print("PlayerEsp ปิดการใช้งานแล้ว")
+                print("Noclip ปิดการใช้งานแล้ว")
             end
         end
     })
-
-    Tabs.Player:AddToggle("NoclipToggle", {
-            Title = "Noclip",
-            Default = false,
-            Description = "เปิดเพื่อเดินทะลุ",
-            Callback = function(state)
-                NoclipEnabled = state
-                if state then                
-                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip.lua"))();
-                    print("Noclip เปิดใช้งานแล้ว")
-                else                   
-                    print("Noclip ปิดการใช้งานแล้ว")
-                end
-            end
-        })
 
     Tabs.Player:AddToggle("PlayerEspToggle", {
         Title = "PlayerEsp",
