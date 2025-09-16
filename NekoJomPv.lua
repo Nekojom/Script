@@ -337,17 +337,17 @@ end
                     print("Noclip เปิดใช้งานแล้ว")
                 else
                     -- ปิด ESP Script
-                getgenv().PlayerEspEnabled = false
+                getgenv().NoclipEnabled = false
                 for _, v in pairs(game:GetService("CoreGui"):GetChildren()) do
-                    if v.Name == "PlayerEsp" then
+                    if v.Name == "Noclip" then
                         v:Destroy()
                     end
                 end
-                print("PlayerEsp ปิดการใช้งานแล้ว")
+                print("Noclip ปิดการใช้งานแล้ว")
             end
         end
     })
-    
+
     Tabs.Player:AddToggle("InvisibleToggle", {
             Title = "Invisible",
             Default = false,
