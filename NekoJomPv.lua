@@ -330,15 +330,18 @@ end
         Default = false,
         Description = "เปิดเพื่อดูชื่อบนหัว",
         Callback = function(state)
-            getgenv().NoclipEnabled = state
-            if state then
+            if not getgenv().ToggleNoclip then
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))();
+            end
+            getgenv().ToggleNoclip(state)
+            if state then
                 print("Noclip เปิดใช้งานแล้ว")
             else
                 print("Noclip ปิดการใช้งานแล้ว")
             end
         end
     })
+
 
     Tabs.Player:AddToggle("PlayerEspToggle", {
         Title = "PlayerEsp",
