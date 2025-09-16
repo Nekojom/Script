@@ -1,5 +1,4 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
@@ -7,17 +6,40 @@ local event = ReplicatedStorage:WaitForChild("ToggleInvisibilityEvent")
 
 local invisible = false
 
+-- ฟังก์ชัน toggle
 local function toggle()
     invisible = not invisible
     event:FireServer(invisible)
     if invisible then
         print("✅ คุณหายตัวแล้ว (คนอื่นก็มองไม่เห็น)")
+        ToggleButton.Text = "กลับมา"
     else
         print("❌ กลับมาแล้ว (มองเห็นปกติ)")
+        ToggleButton.Text = "หายตัว"
     end
 end
 
--- กด H เพื่อหายตัว
+-- GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "InvisibilityGUI"
+ScreenGui.Parent = player:WaitForChild("PlayerGui")
+
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Size = UDim2.new(0, 120, 0, 50)
+ToggleButton.Position = UDim2.new(0.05, 0, 0.1, 0) -- มุมซ้ายบน
+ToggleButton.Text = "หายตัว"
+ToggleButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.Font = Enum.Font.SourceSansBold
+ToggleButton.TextSize = 22
+ToggleButton.Parent = ScreenGui
+ToggleButton.Active = true
+
+ToggleButton.MouseButton1Click:Connect(toggle)
+
+-- เพิ่มทางลัด: กด H หรือใช้ /invis
+local UserInputService = game:GetService("UserInputService")
+
 UserInputService.InputBegan:Connect(function(input, gp)
     if gp then return end
     if input.KeyCode == Enum.KeyCode.H then
@@ -25,7 +47,6 @@ UserInputService.InputBegan:Connect(function(input, gp)
     end
 end)
 
--- หรือใช้ /invis ในแชท
 player.Chatted:Connect(function(msg)
     local m = msg:lower()
     if m == "/invis" or m == "!invis" then
