@@ -113,6 +113,70 @@ do
         end
     })
 
+    Tabs.Script:AddSection("[ ไก่ตัน ]")
+
+        local Dropdown = Tabs.Script:AddDropdown("Dropdown", {
+            Title = "Select Scripts",
+            Values = Jintab,
+            Multi = false,
+            Default = "เลือกสคริปต์",
+        })
+
+        --Dropdown:SetValue("four")
+
+        Dropdown:OnChanged(function(Value)
+            fishs = Value
+        end)
+
+        Tabs.Script:AddButton({
+            Title = "Click To Execute",
+            Description = "กดเพื่อรันสคริปต์",
+            Callback = function()
+                if fishs == "JinkX" then
+                    getgenv().jinkX = {
+                        ['Fish It'] = {
+                            ['Aura Farmer'] = true, -- ฟาม Aura (ถ้ามีเบ็ด Ghostfinn Rod แล้ว)
+
+                            ['Enabled'] = true,
+                            ['Webhook'] = '', -- ใส่ลิ้ง Webhook ถ้าไม่ใช้ไม่ต้องใส่
+                            
+                            ['Fpsboost'] = false,
+                            ['Fps_Cap'] = true,
+                            ['Fps_Value'] = 300,
+                            ['WhiteScreen'] = false,
+
+                            -- เบ็ดที่จะให้ซื้อ
+                            ['Rods'] = {
+                                'Luck Rod',
+                                'Carbon Rod',
+                                'Grass Rod',
+                                'Demascus Rod',
+                                'Ice Rod',
+                                'Lucky Rod',
+                                'Midnight Rod',
+                                'Steampunk Rod',
+                                'Chrome Rod',
+                                'Astral Rod',
+                            },
+
+                            -- Bobber ที่จะให้ซื้อ
+                            ['Baits'] = {
+                                'Topwater Bait',
+                                'Luck Bait',
+                                'Midnight Bait',
+                                'Nature Bait',
+                                'Chroma Bait',
+                                'Dark Matter Bait',
+                                'Corrupt Bait',
+                                'Aether Bait',
+                            },
+                        },
+                    }
+                    loadstring(game:HttpGet('https://raw.githubusercontent.com/stormskmonkey/JinkX/refs/heads/main/Loader.lua'))();
+                end
+            end
+        })
+
     Tabs.Misc:AddSection("[ Other / อื่นๆ ]")
 
     local Dropdown = Tabs.Misc:AddDropdown("Dropdown", {
@@ -239,7 +303,7 @@ do
     Tabs.Player:AddToggle("InfiniteJumpToggle", {
     Title = "Infinite Jump",
     Default = false,
-    Description = "เปิด/ปิด กระโดดไม่จำกัด",
+    Description = "เปิดเพื่อกระโดดไม่จำกัด",
     Callback = function(state)
         InfiniteJumpEnabled = state
         pcall(function()
@@ -263,7 +327,7 @@ end
     Tabs.Player:AddToggle("NoclipToggle", {
             Title = "No clip",
             Default = false,
-            Description = "กดเพื่อทะลุทุกอย่าง",
+            Description = "เปิดเพื่อทะลุทุกอย่าง",
             Callback = function(state)
                 NoclipEnabled = state
                 if state then
