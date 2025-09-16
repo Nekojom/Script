@@ -325,31 +325,32 @@ do
     end)
 end
 
-    Tabs.Player:AddToggle("NoclipToggle", {
-        Title = "No clip",
+    Tabs.Player:AddToggle("PlayerEspToggle", {
+        Title = "PlayerEsp",
         Default = false,
-        Description = "เปิดเพื่อทะลุทุกอย่าง",
+        Description = "เปิดเพื่อดูชื่อบนหัว",
         Callback = function(state)
-            if not getgenv().ToggleNoclip then
-                -- โหลดสคริปต์ Noclip แค่ครั้งเดียว
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip.lua"))();
+            getgenv().PlayerEspEnabled = state
+            if state then
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/PlayerEsp"))();
+                print("PlayerEsp เปิดใช้งานแล้ว")
+            else
+                print("PlayerEsp ปิดการใช้งานแล้ว")
             end
-            -- เรียกฟังก์ชันเปิด/ปิด
-            getgenv().ToggleNoclip(state)
         end
     })
 
-    Tabs.Player:AddToggle("InvisibleToggle", {
-            Title = "Invisible",
+    Tabs.Player:AddToggle("NoclipToggle", {
+            Title = "Noclip",
             Default = false,
-            Description = "เปิดเพื่อหายตัว",
+            Description = "เปิดเพื่อเดินทะลุ",
             Callback = function(state)
                 NoclipEnabled = state
                 if state then                
-                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Invisible.lua"))();
-                    print("Invisible เปิดใช้งานแล้ว")
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip.lua"))();
+                    print("Noclip เปิดใช้งานแล้ว")
                 else                   
-                    print("Invisible ปิดการใช้งานแล้ว")
+                    print("Noclip ปิดการใช้งานแล้ว")
                 end
             end
         })
@@ -357,7 +358,7 @@ end
     Tabs.Player:AddToggle("PlayerEspToggle", {
         Title = "PlayerEsp",
         Default = false,
-        Description = "เปิดเพื่อดูชื่อบนหัว",
+        Description = "เปิดเพื่อมองเห็นผู้เล่น",
         Callback = function(state)
             getgenv().PlayerEspEnabled = state
             if state then
