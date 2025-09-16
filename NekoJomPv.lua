@@ -348,9 +348,8 @@ end
             Description = "เปิดเพื่อหายตัว",
             Callback = function(state)
                 NoclipEnabled = state
-                if state then
-                    
-                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Invisible"))();
+                if state then                
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Invisible.lua"))();
                     print("Invisible เปิดใช้งานแล้ว")
                 else
                     
