@@ -200,27 +200,23 @@ do
         end
     })
 
-    Tabs.Misc:AddSection(" Graphics")
+    Tabs.Misc:AddSection(" Graphics ")
 
-    local Dropdown = Tabs.Misc:AddDropdown("Dropdown", {
-        Title = "Select Scripts",
-        Values = Graphics,
-        Multi = false,
-        Default = "เลือกสคริปต์",
-    })
+    local GraphicsEnabled = false
 
-    Dropdown:OnChanged(function(Value)
-        Graphicss = Value
-    end)
-
-    Tabs.Misc:AddButton({
-        Title = "Click To Execute",
-        Description = "กดเพื่อรันสคริปต์",
-        Callback = function()
-            if Graphicss == "RTX" then
+    Tabs.Misc:AddToggle("GraphicsToggle", {
+        Title = "Graphics",
+        Default = false,
+        Description = "กดเพื่อลดแลค เพิ่มFPS",
+        Callback = function(state)
+            GraphicsEnabled = state
+            if state then
+            
                 loadstring(game:HttpGet("https://rawscripts.net/raw/Just-a-baseplate.-Script-de-RTX-43523"))();
-            elseif Graphicss == "Pshadeultimate" then
-                loadstring(game:HttpGet('https://raw.githubusercontent.com/randomstring0/pshade-ultimate/refs/heads/main/src/cd.lua'))();
+                print("Graphics เปิดใช้งานแล้ว")
+            else
+
+                print("FPS Boots ปิดการใช้งานแล้ว")
             end
         end
     })
@@ -236,11 +232,11 @@ do
         Callback = function(state)
             FPSBootsEnabled = state
             if state then
-                -- เปิด FPS Boots
+
                 loadstring(game:HttpGet("https://pastebin.com/raw/8YZ2cc6V"))();
                 print("FPS Boots เปิดใช้งานแล้ว")
             else
-                -- ปิด FPS Boots (ถ้ามีวิธีปิด)
+
                 print("FPS Boots ปิดการใช้งานแล้ว")
             end
         end
@@ -295,7 +291,7 @@ do
     })
 
     Tabs.Player:AddSection(" Modes ")
-    
+
     Tabs.Player:AddToggle("InfiniteJumpToggle", {
     Title = "Infinite Jump",
     Default = false,
