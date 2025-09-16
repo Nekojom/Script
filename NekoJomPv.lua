@@ -336,12 +336,18 @@ end
                     loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))();
                     print("Noclip เปิดใช้งานแล้ว")
                 else
-                    
-                    print("Noclip ปิดการใช้งานแล้ว")
+                    -- ปิด ESP Script
+                getgenv().PlayerEspEnabled = false
+                for _, v in pairs(game:GetService("CoreGui"):GetChildren()) do
+                    if v.Name == "PlayerEsp" then
+                        v:Destroy()
+                    end
                 end
+                print("PlayerEsp ปิดการใช้งานแล้ว")
             end
-        })
-
+        end
+    })
+    
     Tabs.Player:AddToggle("InvisibleToggle", {
             Title = "Invisible",
             Default = false,
