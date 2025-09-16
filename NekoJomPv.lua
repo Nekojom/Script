@@ -366,7 +366,8 @@ end
                     if state then                
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/PlayerEsp"))();
                         print("PlayerEsp เปิดใช้งานแล้ว")
-                    else                   
+                    else
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/PlayerEsp"))();                   
                         print("PlayerEsp ปิดการใช้งานแล้ว")
                     end
                 end
