@@ -342,19 +342,19 @@ end
             end
         })
 
-    Tabs.Player:AddToggle("InvisibilityToggle", {
-            Title = "Invisibility",
+    Tabs.Player:AddToggle("InvisibleToggle", {
+            Title = "Invisible",
             Default = false,
             Description = "เปิดเพื่อหายตัว",
             Callback = function(state)
                 NoclipEnabled = state
                 if state then
                     
-                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Invisibility"))();
-                    print("Invisibility เปิดใช้งานแล้ว")
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Invisible"))();
+                    print("Invisible เปิดใช้งานแล้ว")
                 else
                     
-                    print("Invisibility ปิดการใช้งานแล้ว")
+                    print("Invisible ปิดการใช้งานแล้ว")
                 end
             end
         })
