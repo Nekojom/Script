@@ -326,18 +326,16 @@ do
 end
 
     Tabs.Player:AddToggle("NoclipToggle", {
-            Title = "No clip",
-            Default = false,
-            Description = "เปิดเพื่อทะลุทุกอย่าง",
-            Callback = function(state)
-                NoclipEnabled = state
-                if state then
-                    
-                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))();
-                    print("Noclip เปิดใช้งานแล้ว")
-                else
-                print("Noclip ปิดการใช้งานแล้ว")
+        Title = "No clip",
+        Default = false,
+        Description = "เปิดเพื่อทะลุทุกอย่าง",
+        Callback = function(state)
+            if not getgenv().ToggleNoclip then
+                -- โหลดสคริปต์ Noclip แค่ครั้งเดียว
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip.lua"))();
             end
+            -- เรียกฟังก์ชันเปิด/ปิด
+            getgenv().ToggleNoclip(state)
         end
     })
 
