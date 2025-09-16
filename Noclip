@@ -1,4 +1,4 @@
--- Noclip.lua (สำหรับ Toggle ใช้งานได้ตลอด)
+-- Noclip.lua
 if not getgenv then getgenv = _G end
 getgenv().NoclipEnabled = getgenv().NoclipEnabled or false
 
@@ -26,13 +26,11 @@ local function clip()
     end
 end
 
--- ฟังก์ชันที่ Toggle จะเรียก
+-- ฟังก์ชันสำหรับ Toggle เรียกใช้งาน
 getgenv().ToggleNoclip = function(state)
     if state then
         noclip()
-        print("Noclip เปิดแล้ว")
     else
         clip()
-        print("Noclip ปิดแล้ว")
     end
 end
