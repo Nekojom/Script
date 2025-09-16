@@ -342,6 +342,20 @@ end
         end
     })
 
+    Tabs.Player:AddToggle("InvisibleToggle", {
+        Title = "Invisible",
+        Default = false,
+        Description = "เปิดเพื่อล่องหน",
+        Callback = function(state)
+            getgenv().InvisibleEnabled = state
+            if state then
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Invisible.lua"))();
+                print("Invisible เปิดใช้งานแล้ว")
+            else
+                print("Invisible ปิดการใช้งานแล้ว")
+            end
+        end
+    })
 
     Tabs.Player:AddToggle("PlayerEspToggle", {
         Title = "PlayerEsp",
