@@ -332,15 +332,33 @@ end
             Callback = function(state)
                 NoclipEnabled = state
                 if state then
-                    -- เปิด Noclip
+                    
                     loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))();
                     print("Noclip เปิดใช้งานแล้ว")
                 else
-                    -- ปิด Noclip (ถ้ามีวิธีปิด)
+                    
                     print("Noclip ปิดการใช้งานแล้ว")
                 end
             end
         })
+
+    Tabs.Player:AddToggle("InvisibilityToggle", {
+            Title = "Invisibility",
+            Default = false,
+            Description = "เปิดเพื่อหายตัว",
+            Callback = function(state)
+                NoclipEnabled = state
+                if state then
+                    
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Invisibility"))();
+                    print("Invisibility เปิดใช้งานแล้ว")
+                else
+                    
+                    print("Invisibility ปิดการใช้งานแล้ว")
+                end
+            end
+        })
+
 
 
     Tabs.TP:AddSection("[ Teleport / วาป ]")
