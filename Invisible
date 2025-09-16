@@ -1,54 +1,34 @@
--- Universal Invisibility Script
--- LocalScript (แนะนำให้รันจาก Executor หรือวางใน StarterPlayerScripts)
-
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
+local event = ReplicatedStorage:WaitForChild("ToggleInvisibilityEvent")
+
 local invisible = false
 
--- ฟังก์ชันเปลี่ยนสถานะหายตัว
-local function setInvisible(state)
-    local char = player.Character or player.CharacterAdded:Wait()
-    for _, part in ipairs(char:GetDescendants()) do
-        if part:IsA("BasePart") then
-            if state then
-                part.Transparency = 1
-                part.CanCollide = false
-            else
-                part.Transparency = 0
-                part.CanCollide = true
-            end
-        elseif part:IsA("Decal") or part:IsA("Texture") then
-            part.Transparency = state and 1 or 0
-        end
+local function toggle()
+    invisible = not invisible
+    event:FireServer(invisible)
+    if invisible then
+        print("✅ คุณหายตัวแล้ว (คนอื่นก็มองไม่เห็น)")
+    else
+        print("❌ กลับมาแล้ว (มองเห็นปกติ)")
     end
 end
 
--- Toggle ด้วยปุ่ม H
+-- กด H เพื่อหายตัว
 UserInputService.InputBegan:Connect(function(input, gp)
     if gp then return end
     if input.KeyCode == Enum.KeyCode.H then
-        invisible = not invisible
-        setInvisible(invisible)
-        if invisible then
-            print("✅ หายตัวแล้ว")
-        else
-            print("❌ กลับมาแล้ว")
-        end
+        toggle()
     end
 end)
 
--- คำสั่งในแชท /invis
+-- หรือใช้ /invis ในแชท
 player.Chatted:Connect(function(msg)
     local m = msg:lower()
     if m == "/invis" or m == "!invis" then
-        invisible = not invisible
-        setInvisible(invisible)
-        if invisible then
-            print("✅ หายตัวแล้ว (จากแชท)")
-        else
-            print("❌ กลับมาแล้ว (จากแชท)")
-        end
+        toggle()
     end
 end)
