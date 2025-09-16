@@ -1,13 +1,13 @@
--- Noclip.lua
+-- Noclip.lua (แก้ไขแล้ว)
 if not getgenv then getgenv = _G end
 getgenv().NoclipEnabled = getgenv().NoclipEnabled or false
 
-local NoclipConnection = nil
+local Noclip = nil
 
 local function noclip()
-    if NoclipConnection then return end
+    if Noclip then return end
     getgenv().NoclipEnabled = true
-    NoclipConnection = game:GetService("RunService").Stepped:Connect(function()
+    Noclip = game:GetService("RunService").Stepped:Connect(function()
         if getgenv().NoclipEnabled and game.Players.LocalPlayer.Character then
             for _, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
                 if v:IsA("BasePart") and v.CanCollide then
@@ -20,13 +20,13 @@ end
 
 local function clip()
     getgenv().NoclipEnabled = false
-    if NoclipConnection then
-        NoclipConnection:Disconnect()
-        NoclipConnection = nil
+    if Noclip then
+        Noclip:Disconnect()
+        Noclip = nil
     end
 end
 
--- ฟังก์ชันสำหรับ Toggle เรียกใช้งาน
+-- ฟังก์ชันสำหรับ Toggle เรียก
 getgenv().ToggleNoclip = function(state)
     if state then
         noclip()
