@@ -205,9 +205,9 @@ do
     local GraphicsEnabled = false
 
     Tabs.Misc:AddToggle("GraphicsToggle", {
-        Title = "Graphics",
+        Title = "RTX",
         Default = false,
-        Description = "กดเพื่อลดแลค เพิ่มFPS",
+        Description = "กดเพื่อรันสคริปต์",
         Callback = function(state)
             GraphicsEnabled = state
             if state then
@@ -216,10 +216,30 @@ do
                 print("Graphics เปิดใช้งานแล้ว")
             else
 
-                print("FPS Boots ปิดการใช้งานแล้ว")
+                print("Graphics ปิดการใช้งานแล้ว")
             end
         end
     })
+
+    local GraphicsEnabled = false
+
+    Tabs.Misc:AddToggle("GraphicsToggle", {
+        Title = "PshadeUltimate",
+        Default = false,
+        Description = "กดเพื่อรันสคริปต์",
+        Callback = function(state)
+            GraphicsEnabled = state
+            if state then
+            
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/randomstring0/pshade-ultimate/refs/heads/main/src/cd.lua'))();
+                print("PshadeUltimate เปิดใช้งานแล้ว")
+            else
+
+                print("PshadeUltimate ปิดการใช้งานแล้ว")
+            end
+        end
+    })
+
 
     Tabs.Misc:AddSection(" FPS Boots ")
 
