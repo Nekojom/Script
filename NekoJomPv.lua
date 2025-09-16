@@ -30,7 +30,6 @@ local LocalPlr = Plr.LocalPlayer
 local StarterGui = game:GetService("StarterGui")
 
 local Script = {"BonkHub","MaruHub","LemonHub","BlueXHub", "SpeedHubX", "NatHub","Chiyo","Bebas","JinkX","VectorHub","H4xScripts","Zeehub","RedzHub","Eps1llonHub",}
-local Other = {"Fiy", "AntiAFK", "infiniteyield",}
 local Jintab = {"JinkX",}
 
 do
@@ -174,8 +173,6 @@ do
 
     Tabs.Misc:AddSection(" External ")
 
-     Tabs.Misc:AddSection(" Fly ")
-
     local FlyEnabled = false
 
     Tabs.Misc:AddToggle("FlyToggle", {
@@ -191,6 +188,44 @@ do
             else
 
                 print("Fly ปิดการใช้งานแล้ว")
+            end
+        end
+    })
+
+    local AntiAFKEnabled = false
+
+    Tabs.Misc:AddToggle("AntiAFKToggle", {
+        Title = "AntiAFK",
+        Default = false,
+        Description = "กดเพื่อรันสคริปต์",
+        Callback = function(state)
+            AntiAFKEnabled = state
+            if state then
+            
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/antiafk'))();
+                print("AntiAFK เปิดใช้งานแล้ว")
+            else
+
+                print("AntiAFK ปิดการใช้งานแล้ว")
+            end
+        end
+    })
+
+    local infiniteyieldEnabled = false
+
+    Tabs.Misc:AddToggle("infiniteyieldToggle", {
+        Title = "infiniteyield",
+        Default = false,
+        Description = "กดเพื่อรันสคริปต์",
+        Callback = function(state)
+            infiniteyieldEnabled = state
+            if state then
+            
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/infiniteyield'))();
+                print("infiniteyield เปิดใช้งานแล้ว")
+            else
+
+                print("infiniteyield ปิดการใช้งานแล้ว")
             end
         end
     })
