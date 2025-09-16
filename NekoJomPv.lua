@@ -31,7 +31,6 @@ local StarterGui = game:GetService("StarterGui")
 
 local Script = {"BonkHub","MaruHub","LemonHub","BlueXHub", "SpeedHubX", "NatHub","Chiyo","Bebas","JinkX","VectorHub","H4xScripts","Zeehub","RedzHub","Eps1llonHub",}
 local Other = {"Fiy", "AntiAFK", "infiniteyield",}
-local Graphics = {"RTX", "Pshadeultimate",}
 local Jintab = {"JinkX",}
 
 do
@@ -56,7 +55,7 @@ do
     })
     end)
 
-    Tabs.Script:AddSection("[ Key / มีคีย์ ]")
+    Tabs.Script:AddSection(" Key / มีคีย์ ")
 
     local Dropdown = Tabs.Script:AddDropdown("Dropdown", {
         Title = "Select Scripts",
@@ -109,7 +108,7 @@ do
         end
     })
 
-    Tabs.Script:AddSection("[ ไก่ตัน ]")
+    Tabs.Script:AddSection(" ไก่ตัน ")
 
         local Dropdown = Tabs.Script:AddDropdown("Dropdown", {
             Title = "Select Scripts",
@@ -175,27 +174,23 @@ do
 
     Tabs.Misc:AddSection(" External ")
 
-    local Dropdown = Tabs.Misc:AddDropdown("Dropdown", {
-        Title = "Select Scripts",
-        Values = Other,
-        Multi = false,
-        Default = "เลือกสคริปต์",
-    })
+     Tabs.Misc:AddSection(" Fly ")
 
-    Dropdown:OnChanged(function(Value)
-        Others = Value
-    end)
+    local FlyEnabled = false
 
-    Tabs.Misc:AddButton({
-        Title = "Click To Execute",
+    Tabs.Misc:AddToggle("FlyToggle", {
+        Title = "Fly",
+        Default = false,
         Description = "กดเพื่อรันสคริปต์",
-        Callback = function()
-            if Others == "Fiy" then
+        Callback = function(state)
+            FlyEnabled = state
+            if state then
+            
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Fly"))();
-            elseif Others == "AntiAFK" then
-                loadstring(game:HttpGet('https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/antiafk'))();
-            elseif Others == "infiniteyield" then
-                loadstring(game:HttpGet('https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/infiniteyield'))();
+                print("Fly เปิดใช้งานแล้ว")
+            else
+
+                print("Fly ปิดการใช้งานแล้ว")
             end
         end
     })
@@ -385,7 +380,7 @@ end
 
 
 
-    Tabs.TP:AddSection("[ Teleport / วาป ]")
+    Tabs.TP:AddSection(" Teleport  ")
 
     Tabs.TP:AddButton({
         Title = "Teleport To Shop Seeds",
@@ -479,3 +474,4 @@ end
 dragify(logoButton, logoButton)
 
 SaveManager:LoadAutoloadConfig()
+
