@@ -295,20 +295,20 @@ do
     })
 
     Tabs.Player:AddSection(" Modes ")
-
+    
     Tabs.Player:AddToggle("InfiniteJumpToggle", {
     Title = "Infinite Jump",
     Default = false,
     Description = "เปิดเพื่อกระโดดไม่จำกัด",
     Callback = function(state)
         InfiniteJumpEnabled = state
-        pcall(function()
+        if InfiniteJumpEnabled then
             StarterGui:SetCore("SendNotification", {
                 Title = "Infinite Jump",
                 Text = state and "เปิดใช้งานแล้ว" or "ปิดการใช้งานแล้ว",
                 Duration = 2
             })
-        end)
+        end
     end
 })
 
