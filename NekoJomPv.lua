@@ -251,7 +251,7 @@ do
         end
     })
 
-    Tabs.Player:AddSection("[ Speed / ความเร็ว ]")
+    Tabs.Player:AddSection(" Movement ")
 
     local Input = Tabs.Player:AddInput("Input", {
         Title = "WalkSpeed",
@@ -276,8 +276,6 @@ do
         end
     })
 
-    Tabs.Player:AddSection("[ Jump / กระโดด ]")
-
     local Input = Tabs.Player:AddInput("Input", {
         Title = "JumpPower",
         Default = "50",
@@ -300,6 +298,8 @@ do
             LocalPlr.Character.Humanoid.JumpPower = Jump
         end
     })
+
+    Tabs.Player:AddSection(" Modes ")
 
     Tabs.Player:AddToggle("InfiniteJumpToggle", {
     Title = "Infinite Jump",
