@@ -1,0 +1,54 @@
+-- Universal Invisibility Script
+-- LocalScript (แนะนำให้รันจาก Executor หรือวางใน StarterPlayerScripts)
+
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local invisible = false
+
+-- ฟังก์ชันเปลี่ยนสถานะหายตัว
+local function setInvisible(state)
+    local char = player.Character or player.CharacterAdded:Wait()
+    for _, part in ipairs(char:GetDescendants()) do
+        if part:IsA("BasePart") then
+            if state then
+                part.Transparency = 1
+                part.CanCollide = false
+            else
+                part.Transparency = 0
+                part.CanCollide = true
+            end
+        elseif part:IsA("Decal") or part:IsA("Texture") then
+            part.Transparency = state and 1 or 0
+        end
+    end
+end
+
+-- Toggle ด้วยปุ่ม H
+UserInputService.InputBegan:Connect(function(input, gp)
+    if gp then return end
+    if input.KeyCode == Enum.KeyCode.H then
+        invisible = not invisible
+        setInvisible(invisible)
+        if invisible then
+            print("✅ หายตัวแล้ว")
+        else
+            print("❌ กลับมาแล้ว")
+        end
+    end
+end)
+
+-- คำสั่งในแชท /invis
+player.Chatted:Connect(function(msg)
+    local m = msg:lower()
+    if m == "/invis" or m == "!invis" then
+        invisible = not invisible
+        setInvisible(invisible)
+        if invisible then
+            print("✅ หายตัวแล้ว (จากแชท)")
+        else
+            print("❌ กลับมาแล้ว (จากแชท)")
+        end
+    end
+end)
