@@ -56,11 +56,6 @@ do
     })
     end)
 
-    Tabs.Script:AddParagraph({
-        Title = "ScriptAll",
-        Content = "รวมScriptที่มีคีย์/ไม่มีคีย์ก็ลองทุกอันว่าอันไหนใช้ในMapได้บ้างรันขึ้นคือใช้งานได้"
-    })
-
     Tabs.Script:AddSection("[ Key / มีคีย์ ]")
 
     local Dropdown = Tabs.Script:AddDropdown("Dropdown", {
@@ -178,7 +173,7 @@ do
             end
         })
 
-    Tabs.Misc:AddSection("[ Other / อื่นๆ ]")
+    Tabs.Misc:AddSection(" External ")
 
     local Dropdown = Tabs.Misc:AddDropdown("Dropdown", {
         Title = "Select Scripts",
@@ -205,7 +200,7 @@ do
         end
     })
 
-    Tabs.Misc:AddSection("[ Graphics / กราฟิก ]")
+    Tabs.Misc:AddSection(" Graphics")
 
     local Dropdown = Tabs.Misc:AddDropdown("Dropdown", {
         Title = "Select Scripts",
@@ -230,7 +225,7 @@ do
         end
     })
 
-    Tabs.Misc:AddSection("[ FPS Boots ]")
+    Tabs.Misc:AddSection(" FPS Boots ")
 
     local FPSBootsEnabled = false
 
