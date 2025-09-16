@@ -363,7 +363,7 @@ end
         Callback = function(state)
             getgenv().PlayerEspEnabled = state
             if state then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/PlayerEsp.lua"))();
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/PlayerEsp"))();
                 print("PlayerEsp เปิดใช้งานแล้ว")
             else
                 print("PlayerEsp ปิดการใช้งานแล้ว")
