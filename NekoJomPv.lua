@@ -336,13 +336,6 @@ end
                     loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))();
                     print("Noclip เปิดใช้งานแล้ว")
                 else
-                    -- ปิด ESP Script
-                getgenv().NoclipEnabled = false
-                for _, v in pairs(game:GetService("CoreGui"):GetChildren()) do
-                    if v.Name == "Noclip" then
-                        v:Destroy()
-                    end
-                end
                 print("Noclip ปิดการใช้งานแล้ว")
             end
         end
@@ -368,23 +361,16 @@ end
         Default = false,
         Description = "เปิดเพื่อดูชื่อบนหัว",
         Callback = function(state)
-            if state then                
-                -- โหลด ESP Script
-                getgenv().PlayerEspEnabled = true
+            getgenv().PlayerEspEnabled = state
+            if state then
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/PlayerEsp.lua"))();
                 print("PlayerEsp เปิดใช้งานแล้ว")
             else
-                -- ปิด ESP Script
-                getgenv().PlayerEspEnabled = false
-                for _, v in pairs(game:GetService("CoreGui"):GetChildren()) do
-                    if v.Name == "PlayerEsp" then
-                        v:Destroy()
-                    end
-                end
                 print("PlayerEsp ปิดการใช้งานแล้ว")
             end
         end
     })
+
 
 
     Tabs.TP:AddSection("[ Teleport / วาป ]")
