@@ -117,7 +117,7 @@ do
 
         local Dropdown = Tabs.Script:AddDropdown("Dropdown", {
             Title = "Select Scripts",
-            Values = Jintab,
+            Values = Script,
             Multi = false,
             Default = "เลือกสคริปต์",
         })
@@ -125,14 +125,14 @@ do
         --Dropdown:SetValue("four")
 
         Dropdown:OnChanged(function(Value)
-            fishs = Value
+            Scripts = Value
         end)
 
         Tabs.Script:AddButton({
             Title = "Click To Execute",
             Description = "กดเพื่อรันสคริปต์",
             Callback = function()
-                if fishs == "JinkX" then
+                if Scripts == "JinkX" then
                     getgenv().jinkX = {
                         ['Fish It'] = {
                             ['Aura Farmer'] = true, -- ฟาม Aura (ถ้ามีเบ็ด Ghostfinn Rod แล้ว)
