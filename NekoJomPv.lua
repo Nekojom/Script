@@ -32,6 +32,7 @@ local StarterGui = game:GetService("StarterGui")
 local Script = {"BonkHub","MaruHub","LemonHub","BlueXHub", "SpeedHubX", "NatHub","Chiyo","Bebas","JinkX","VectorHub","H4xScripts","Zeehub","RedzHub","Eps1llonHub",}
 local Other = {"Fiy", "AntiAFK", "infiniteyield",}
 local Graphics = {"RTX", "Pshadeultimate",}
+local Jintab = {"JinkX",}
 
 do
     pcall(function()
@@ -117,7 +118,7 @@ do
 
         local Dropdown = Tabs.Script:AddDropdown("Dropdown", {
             Title = "Select Scripts",
-            Values = Script,
+            Values = Jintab,
             Multi = false,
             Default = "เลือกสคริปต์",
         })
