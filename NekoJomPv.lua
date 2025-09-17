@@ -369,7 +369,7 @@ end
     Tabs.Player:AddToggle("NoclipToggle", {
         Title = "Noclip",
         Default = false,
-        Description = "เปิดเพื่อดูชื่อบนหัว",
+        Description = "เปิดเพื่อทะลุผ่านสิ่งของ",
         Callback = function(state)
             if not getgenv().ToggleNoclip then
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Noclip"))();
@@ -390,7 +390,7 @@ end
         Callback = function(state)
             getgenv().InvisibleEnabled = state
             if state then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Invisible.lua"))();
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Invisible"))();
                 print("Invisible เปิดใช้งานแล้ว")
             else
                 print("Invisible ปิดการใช้งานแล้ว")
