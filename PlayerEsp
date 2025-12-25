@@ -1,6 +1,6 @@
--- PlayerEsp.lua (แก้ไขสำหรับ Toggle)
+-- PlayerEsp.lua (ESP + Name Toggle)
 _G.FriendColor = Color3.fromRGB(0, 0, 255)
-_G.EnemyColor = Color3.fromRGB(255, 0, 0)
+_G.EnemyColor  = Color3.fromRGB(255, 0, 0)
 _G.UseTeamColor = true
 
 if not getgenv then getgenv = _G end
@@ -11,53 +11,77 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local plr = Players.LocalPlayer
 
--- โฟลเดอร์หลักเก็บ ESP
-local Holder = game.CoreGui:FindFirstChild("ESP") or Instance.new("Folder", game.CoreGui)
-Holder.Name = "ESP"
-
 -- ฟังก์ชันสร้าง Highlight
-local function esp(target, color)
+local function createESP(target, color)
     if not getgenv().PlayerEspEnabled then return end
     if target.Character then
-        if not target.Character:FindFirstChild("GetReal") then
-            local highlight = Instance.new("Highlight")
-            highlight.Name = "GetReal"
-            highlight.Adornee = target.Character
-            highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-            highlight.FillColor = color
-            highlight.Parent = target.Character
-        else
-            target.Character.GetReal.FillColor = color
+        -- Highlight
+        local hl = target.Character:FindFirstChild("GetReal")
+        if not hl then
+            hl = Instance.new("Highlight")
+            hl.Name = "GetReal"
+            hl.Adornee = target.Character
+            hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+            hl.Parent = target.Character
+        end
+        hl.FillColor = color
+
+        -- Name ESP
+        local head = target.Character:FindFirstChild("Head")
+        if head and not head:FindFirstChild("NameESP") then
+            local bill = Instance.new("BillboardGui")
+            bill.Name = "NameESP"
+            bill.Adornee = head
+            bill.Size = UDim2.new(0, 200, 0, 50)
+            bill.StudsOffset = Vector3.new(0, 2.5, 0)
+            bill.AlwaysOnTop = true
+            bill.Parent = head
+
+            local text = Instance.new("TextLabel")
+            text.Size = UDim2.new(1, 0, 1, 0)
+            text.BackgroundTransparency = 1
+            text.Text = target.Name
+            text.TextColor3 = color
+            text.TextStrokeTransparency = 0
+            text.TextScaled = true
+            text.Font = Enum.Font.GothamBold
+            text.Parent = bill
+        elseif head and head:FindFirstChild("NameESP") then
+            head.NameESP.TextLabel.TextColor3 = color
         end
     end
 end
 
--- ฟังก์ชันลบ ESP ทั้งหมด
+-- ลบ ESP ทั้งหมด
 local function clearAllEsp()
     for _, v in pairs(Players:GetPlayers()) do
-        if v.Character and v.Character:FindFirstChild("GetReal") then
-            v.Character.GetReal:Destroy()
+        if v.Character then
+            if v.Character:FindFirstChild("GetReal") then
+                v.Character.GetReal:Destroy()
+            end
+            local head = v.Character:FindFirstChild("Head")
+            if head and head:FindFirstChild("NameESP") then
+                head.NameESP:Destroy()
+            end
         end
-    end
-    if Holder then
-        Holder:ClearAllChildren()
     end
 end
 
--- ลูปหลัก
-spawn(function()
-    while task.wait(0.2) do
+-- Loop หลัก
+task.spawn(function()
+    while task.wait(0.3) do
         if not getgenv().PlayerEspEnabled then
             clearAllEsp()
-            -- รอจนกว่าจะเปิดใช้งานใหม่
             repeat task.wait(1) until getgenv().PlayerEspEnabled
         end
 
-        -- วนสร้าง ESP ให้ผู้เล่นทุกคน
         for _, v in pairs(Players:GetPlayers()) do
             if v ~= plr then
-                local color = _G.UseTeamColor and v.TeamColor.Color or ((plr.TeamColor == v.TeamColor) and _G.FriendColor or _G.EnemyColor)
-                esp(v, color)
+                local color =
+                    _G.UseTeamColor and v.TeamColor.Color
+                    or ((plr.TeamColor == v.TeamColor) and _G.FriendColor or _G.EnemyColor)
+
+                createESP(v, color)
             end
         end
     end
