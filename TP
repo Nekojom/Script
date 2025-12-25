@@ -1,77 +1,69 @@
--- TP ไปหาผู้เล่น (เลือกจาก UI + ปิดได้)
+-- ================= SERVICES =================
 local Players = game:GetService("Players")
-local lp = Players.LocalPlayer
+local UserInputService = game:GetService("UserInputService")
+local LocalPlayer = Players.LocalPlayer
+
+-- ================= SETTINGS =================
+local TOGGLE_KEY = Enum.KeyCode.K
+local BEHIND_DISTANCE = 3
 
 -- ================= UI =================
-local gui = Instance.new("ScreenGui", game.CoreGui)
+local gui = Instance.new("ScreenGui")
 gui.Name = "TPPlayerUI"
 gui.ResetOnSpawn = false
+gui.Parent = game.CoreGui
 
 local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.new(0, 230, 0, 270)
-frame.Position = UDim2.new(0, 20, 0.5, -135)
-frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+frame.Size = UDim2.new(0, 250, 0, 300)
+frame.Position = UDim2.new(0.05, 0, 0.2, 0)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 frame.BorderSizePixel = 0
 frame.Active = true
 frame.Draggable = true
 
-Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
-
--- ================= Header =================
-local header = Instance.new("Frame", frame)
-header.Size = UDim2.new(1, 0, 0, 35)
-header.BackgroundTransparency = 1
-
-local title = Instance.new("TextLabel", header)
-title.Size = UDim2.new(1, -35, 1, 0)
-title.Position = UDim2.new(0, 10, 0, 0)
-title.BackgroundTransparency = 1
-title.Text = "TP TO PLAYER"
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0, 30)
+title.Text = "TP ไปหาผู้เล่น"
 title.TextColor3 = Color3.new(1,1,1)
+title.BackgroundColor3 = Color3.fromRGB(45,45,45)
+title.BorderSizePixel = 0
 title.Font = Enum.Font.GothamBold
-title.TextSize = 15
-title.TextXAlignment = Left
+title.TextSize = 14
 
--- ❌ ปุ่มปิด
-local close = Instance.new("TextButton", header)
-close.Size = UDim2.new(0, 25, 0, 25)
-close.Position = UDim2.new(1, -30, 0.5, -12)
-close.Text = "✕"
-close.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
-close.TextColor3 = Color3.new(1,1,1)
-close.Font = Enum.Font.GothamBold
-close.TextSize = 14
-close.BorderSizePixel = 0
-Instance.new("UICorner", close).CornerRadius = UDim.new(0, 6)
+local closeBtn = Instance.new("TextButton", frame)
+closeBtn.Size = UDim2.new(0, 30, 0, 30)
+closeBtn.Position = UDim2.new(1, -30, 0, 0)
+closeBtn.Text = "X"
+closeBtn.BackgroundColor3 = Color3.fromRGB(170, 50, 50)
+closeBtn.TextColor3 = Color3.new(1,1,1)
+closeBtn.BorderSizePixel = 0
 
-close.MouseButton1Click:Connect(function()
-    gui:Destroy() -- ปิดทิ้งจริง
-end)
-
--- ================= Player List =================
 local listFrame = Instance.new("ScrollingFrame", frame)
-listFrame.Position = UDim2.new(0, 10, 0, 45)
-listFrame.Size = UDim2.new(1, -20, 1, -55)
-listFrame.CanvasSize = UDim2.new(0,0,0,0)
-listFrame.ScrollBarThickness = 4
+listFrame.Position = UDim2.new(0, 0, 0, 35)
+listFrame.Size = UDim2.new(1, 0, 1, -35)
+listFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+listFrame.ScrollBarImageTransparency = 0.3
+listFrame.BorderSizePixel = 0
 listFrame.BackgroundTransparency = 1
 
 local layout = Instance.new("UIListLayout", listFrame)
-layout.Padding = UDim.new(0, 6)
+layout.Padding = UDim.new(0, 5)
 
--- ================= TP Function =================
-local function TPToPlayer(plr)
-    if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
-        local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
-        if hrp then
-            hrp.CFrame =
-                plr.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
-        end
-    end
+-- ================= FUNCTIONS =================
+local function tpBehind(targetPlayer)
+    if not targetPlayer.Character then return end
+    local hrp = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+    local myChar = LocalPlayer.Character
+    if not (hrp and myChar) then return end
+
+    local myHRP = myChar:FindFirstChild("HumanoidRootPart")
+    if not myHRP then return end
+
+    myHRP.CFrame =
+        hrp.CFrame * CFrame.new(0, 0, BEHIND_DISTANCE)
 end
 
--- ================= Refresh =================
-local function RefreshPlayers()
+local function refreshList()
     for _, v in pairs(listFrame:GetChildren()) do
         if v:IsA("TextButton") then
             v:Destroy()
@@ -79,30 +71,41 @@ local function RefreshPlayers()
     end
 
     for _, plr in pairs(Players:GetPlayers()) do
-        if plr ~= lp then
-            local btn = Instance.new("TextButton", listFrame)
-            btn.Size = UDim2.new(1, 0, 0, 32)
+        if plr ~= LocalPlayer then
+            local btn = Instance.new("TextButton")
+            btn.Size = UDim2.new(1, -10, 0, 30)
             btn.Text = plr.Name
-            btn.BackgroundColor3 = Color3.fromRGB(40,40,40)
+            btn.BackgroundColor3 = Color3.fromRGB(50,50,50)
             btn.TextColor3 = Color3.new(1,1,1)
-            btn.Font = Enum.Font.Gotham
-            btn.TextSize = 14
             btn.BorderSizePixel = 0
-
-            Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
+            btn.Font = Enum.Font.Gotham
+            btn.TextSize = 13
+            btn.Parent = listFrame
 
             btn.MouseButton1Click:Connect(function()
-                TPToPlayer(plr)
+                tpBehind(plr)
             end)
         end
     end
 
     task.wait()
-    listFrame.CanvasSize =
-        UDim2.new(0, 0, 0, layout.AbsoluteContentSize.Y + 5)
+    listFrame.CanvasSize = UDim2.new(0, 0, 0, layout.AbsoluteContentSize.Y + 5)
 end
 
-Players.PlayerAdded:Connect(RefreshPlayers)
-Players.PlayerRemoving:Connect(RefreshPlayers)
+-- ================= EVENTS =================
+closeBtn.MouseButton1Click:Connect(function()
+    gui:Destroy()
+end)
 
-RefreshPlayers()
+Players.PlayerAdded:Connect(refreshList)
+Players.PlayerRemoving:Connect(refreshList)
+
+UserInputService.InputBegan:Connect(function(input, gp)
+    if gp then return end
+    if input.KeyCode == TOGGLE_KEY then
+        frame.Visible = not frame.Visible
+    end
+end)
+
+-- ================= START =================
+refreshList()
