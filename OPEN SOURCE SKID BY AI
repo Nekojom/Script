@@ -1,0 +1,973 @@
+--// FierHub Universal V5 - PART 1 (GUI Setup)
+
+local Players = game:GetService("Players")
+
+local CoreGui = game:GetService("CoreGui")
+
+local StarterGui = game:GetService("StarterGui")
+
+local PathfindingService = game:GetService("PathfindingService")
+
+local player = Players.LocalPlayer
+
+local char = player.Character or player.CharacterAdded:Wait()
+
+local hrp = char:WaitForChild("HumanoidRootPart")
+
+-- GUI Container
+
+local mainGui = Instance.new("ScreenGui")
+
+mainGui.Name = "FierHub_UniversalV5_" .. tostring(math.random(1000,9999))
+
+mainGui.Parent = CoreGui
+
+-- Scrolling Frame
+
+local scroll = Instance.new("ScrollingFrame", mainGui)
+
+scroll.Size = UDim2.new(0, 300, 0, 400)
+
+scroll.Position = UDim2.new(0, 20, 0, 50)
+
+scroll.CanvasSize = UDim2.new(0, 0, 3, 0)
+
+scroll.ScrollBarThickness = 8
+
+scroll.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+
+scroll.BorderSizePixel = 2
+
+-- Title
+
+local title = Instance.new("TextLabel", scroll)
+
+title.Size = UDim2.new(0, 260, 0, 30)
+
+title.Position = UDim2.new(0, 20, 0, 10)
+
+title.Text = "🔥 FierHub Universal V5"
+
+title.TextColor3 = Color3.fromRGB(255,255,0)
+
+title.BackgroundTransparency = 1
+
+title.Font = Enum.Font.GothamBold
+
+title.TextScaled = true
+
+-- INTAST CLAIM Button
+
+local btnClaim = Instance.new("TextButton", scroll)
+
+btnClaim.Size = UDim2.new(0, 260, 0, 40)
+
+btnClaim.Position = UDim2.new(0, 20, 0, 50)
+
+btnClaim.Text = "🌐 INTAST CLAIM"
+
+btnClaim.BackgroundColor3 = Color3.fromRGB(0,200,0)
+
+btnClaim.TextColor3 = Color3.new(1,1,1)
+
+btnClaim.Font = Enum.Font.GothamBold
+
+btnClaim.TextScaled = true
+
+-- AUTO FIX Button
+
+local btnFix = Instance.new("TextButton", scroll)
+
+btnFix.Size = UDim2.new(0, 260, 0, 40)
+
+btnFix.Position = UDim2.new(0, 20, 0, 100)
+
+btnFix.Text = "🔁 AUTO FIX"
+
+btnFix.BackgroundColor3 = Color3.fromRGB(255,140,0)
+
+btnFix.TextColor3 = Color3.new(1,1,1)
+
+btnFix.Font = Enum.Font.GothamBold
+
+btnFix.TextScaled = true
+
+-- DETECT UGC Button
+
+local btnScan = Instance.new("TextButton", scroll)
+
+btnScan.Size = UDim2.new(0, 260, 0, 40)
+
+btnScan.Position = UDim2.new(0, 20, 0, 150)
+
+btnScan.Text = "🔍 DETECT UGC"
+
+btnScan.BackgroundColor3 = Color3.fromRGB(80,80,255)
+
+btnScan.TextColor3 = Color3.new(1,1,1)
+
+btnScan.Font = Enum.Font.GothamBold
+
+btnScan.TextScaled = true
+
+-- AUTO OBBY Input
+
+local obbyInput = Instance.new("TextBox", scroll)
+
+obbyInput.Size = UDim2.new(0, 260, 0, 40)
+
+obbyInput.Position = UDim2.new(0, 20, 0, 200)
+
+obbyInput.PlaceholderText = "Enter stage number (1–1000)"
+
+obbyInput.BackgroundColor3 = Color3.fromRGB(90,90,180)
+
+obbyInput.TextColor3 = Color3.new(1,1,1)
+
+obbyInput.Font = Enum.Font.GothamBold
+
+obbyInput.TextScaled = true
+
+-- Bagian Function & Logic
+
+local logClaims = {}
+
+local function notify(title, text)
+
+StarterGui:SetCore("SendNotification", {
+
+Title = title,
+
+Text = text,
+
+Duration = 5
+
+})
+
+end
+
+-- Logger Hook
+
+local function logHook(object)
+
+if not table.find(logClaims, object) then
+
+table.insert(logClaims, object)
+
+print("📌 Hooked:", object:GetFullName())
+
+end
+
+end
+
+-- INTAST CLAIM
+
+local function claimUGC()
+
+local count = 0
+
+for _, obj in ipairs(game:GetDescendants()) do
+
+if obj:IsA("TextButton") and obj.Visible and obj.Text and obj.Text:lower():find("claim") then
+
+pcall(function()
+
+logHook(obj)
+
+obj:Activate()
+
+end)
+
+count += 1
+
+elseif obj:IsA("ProximityPrompt") and obj.Enabled then
+
+pcall(function()
+
+logHook(obj)
+
+fireproximityprompt(obj)
+
+end)
+
+count += 1
+
+end
+
+end
+
+notify(count > 0 and "✅ UGC Claimed!" or "❌ Nothing Found", "Claimed: " .. count)
+
+end
+
+-- DETECT UGC
+
+local function scanUGC()
+
+local found = 0
+
+for _, obj in ipairs(game:GetDescendants()) do
+
+if obj:IsA("TextButton") and obj.Text and (obj.Text:lower():find("claim") or obj.Text:lower():find("get")) then
+
+found += 1
+
+end
+
+end
+
+notify("🔍 Scan Done", found > 0 and ("Found " .. found .. " UGC buttons!") or "No UGC detected.")
+
+end
+
+-- AUTO FIX LOOP
+
+local autoFixing = false
+
+local function autoFixLoop()
+
+autoFixing = not autoFixing
+
+notify(autoFixing and "🔁 Auto Fix ON" or "🔁 Auto Fix OFF", "Loop claim every 2 seconds.")
+
+while autoFixing do
+
+claimUGC()
+
+wait(2)
+
+end
+
+end
+
+-- AUTO OBBY PATH
+
+local function autoObby(stageNumber)
+
+local foundStage = false
+
+for _, obj in ipairs(workspace:GetDescendants()) do
+
+if obj:IsA("BasePart") and obj.Name:lower():find("stage") and tostring(obj.Name):find(tostring(stageNumber)) then
+
+local path = PathfindingService:CreatePath()
+
+path:ComputeAsync(hrp.Position, obj.Position)
+
+if path.Status == Enum.PathStatus.Complete then
+
+for _, waypoint in ipairs(path:GetWaypoints()) do
+
+hrp.CFrame = CFrame.new(waypoint.Position)
+
+wait(0.1)
+
+end
+
+notify("✅ Stage Complete", "Reached stage: " .. stageNumber)
+
+foundStage = true
+
+break
+
+end
+
+end
+
+end
+
+if not foundStage then
+
+notify("❌ Stage Not Found", "Stage " .. stageNumber .. " tidak ditemukan.")
+
+end
+
+end
+
+-- Sambungkan tombol ke fungsi masing-masing
+
+btnClaim.MouseButton1Click:Connect(claimUGC)
+
+btnScan.MouseButton1Click:Connect(scanUGC)
+
+btnFix.MouseButton1Click:Connect(function()
+
+coroutine.wrap(autoFixLoop)()
+
+end)
+
+-- Fokus Lost untuk Auto Obby
+
+obbyInput.FocusLost:Connect(function(enter)
+
+if enter then
+
+local stage = tonumber(obbyInput.Text)
+
+if stage then
+
+autoObby(stage)
+
+else
+
+notify("⚠️ Invalid Input", "Masukkan angka stage 1–1000.")
+
+end
+
+end
+
+end)
+
+local function autoTouchUGC()
+
+local touched = 0
+
+for _, part in ipairs(workspace:GetDescendants()) do
+
+if part:IsA("BasePart") and part:FindFirstChildOfClass("TouchTransmitter") then
+
+pcall(function()
+
+firetouchinterest(hrp, part, 0)
+
+wait(0.1)
+
+firetouchinterest(hrp, part, 1)
+
+end)
+
+touched += 1
+
+end
+
+end
+
+notify("🧲 Auto Touch Done", "Touched: " .. touched .. " parts.")
+
+end
+
+local function detectUGCStrength()
+
+local hooked = 0
+
+for _, obj in ipairs(game:GetDescendants()) do
+
+if obj:IsA("TextButton") and obj.Visible and obj.Text and obj.Text:lower():find("claim") then
+
+local suc, res = pcall(function()
+
+return getconnections(obj.MouseButton1Click)
+
+end)
+
+if suc and res and #res > 0 then
+
+hooked += 1
+
+end
+
+end
+
+end
+
+notify("🧠 UGC Hook Analysis", hooked > 0 and hooked .. " buttons have hooks." or "No hook found.")
+
+end
+
+local function spoofHookSniper()
+
+for _, obj in ipairs(game:GetDescendants()) do
+
+if obj:IsA("TextButton") and obj.Visible and obj.Text and obj.Text:lower():find("claim") then
+
+local conns = getconnections(obj.MouseButton1Click)
+
+for i, conn in ipairs(conns) do
+
+print("🎣 Hook Sniped:", conn.Function)
+
+end
+
+end
+
+end
+
+notify("🎣 Spoofer Scan", "Logged all hooks to console.")
+
+end
+
+local collected = {}
+
+local function logUGC(object)
+
+if not table.find(collected, object) then
+
+table.insert(collected, object)
+
+print("✅ Collected UGC:", object:GetFullName())
+
+end
+
+end
+
+local function claimAllUGC()
+
+claimUGC()
+
+wait(0.5)
+
+autoTouchUGC()
+
+end
+
+-- AUTO TOUCH UGC Button
+
+local btnTouch = Instance.new("TextButton", scroll)
+
+btnTouch.Size = UDim2.new(0, 260, 0, 40)
+
+btnTouch.Position = UDim2.new(0, 20, 0, 250)
+
+btnTouch.Text = "🧲 AUTO TOUCH UGC"
+
+btnTouch.BackgroundColor3 = Color3.fromRGB(100, 255, 100)
+
+btnTouch.TextColor3 = Color3.new(0,0,0)
+
+btnTouch.Font = Enum.Font.GothamBold
+
+btnTouch.TextScaled = true
+
+btnTouch.MouseButton1Click:Connect(autoTouchUGC)
+
+-- DETECT UGC HOOK STRENGTH
+
+local btnStrength = Instance.new("TextButton", scroll)
+
+btnStrength.Size = UDim2.new(0, 260, 0, 40)
+
+btnStrength.Position = UDim2.new(0, 20, 0, 300)
+
+btnStrength.Text = "🛡️ UGC HOOK STRENGTH"
+
+btnStrength.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
+
+btnStrength.TextColor3 = Color3.new(1,1,1)
+
+btnStrength.Font = Enum.Font.GothamBold
+
+btnStrength.TextScaled = true
+
+btnStrength.MouseButton1Click:Connect(detectUGCStrength)
+
+-- SPOOF HOOK SNIPE Button
+
+local btnSpoof = Instance.new("TextButton", scroll)
+
+btnSpoof.Size = UDim2.new(0, 260, 0, 40)
+
+btnSpoof.Position = UDim2.new(0, 20, 0, 350)
+
+btnSpoof.Text = "🎣 SNIPE HOOK LOG"
+
+btnSpoof.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
+
+btnSpoof.TextColor3 = Color3.new(1,1,1)
+
+btnSpoof.Font = Enum.Font.GothamBold
+
+btnSpoof.TextScaled = true
+
+btnSpoof.MouseButton1Click:Connect(spoofHookSniper)
+
+-- CLAIM ALL UGC Button
+
+local btnAll = Instance.new("TextButton", scroll)
+
+btnAll.Size = UDim2.new(0, 260, 0, 40)
+
+btnAll.Position = UDim2.new(0, 20, 0, 400)
+
+btnAll.Text = "💣 CLAIM ALL COMBO"
+
+btnAll.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+
+btnAll.TextColor3 = Color3.fromRGB(255, 255, 0)
+
+btnAll.Font = Enum.Font.GothamBold
+
+btnAll.TextScaled = true
+
+btnAll.MouseButton1Click:Connect(claimAllUGC)
+
+scroll.CanvasSize = UDim2.new(0, 0, 4.5, 0)
+
+-- DRAG FUNCTION FOR MAIN GUI
+
+local dragToggle = nil
+
+local dragInput = nil
+
+local dragStart = nil
+
+local startPos = nil
+
+local function updateDrag(input)
+
+local delta = input.Position - dragStart
+
+scroll.Position = UDim2.new(
+
+startPos.X.Scale,
+
+startPos.X.Offset + delta.X,
+
+startPos.Y.Scale,
+
+startPos.Y.Offset + delta.Y
+
+)
+
+end
+
+scroll.InputBegan:Connect(function(input)
+
+if input.UserInputType == Enum.UserInputType.MouseButton1 then
+
+dragToggle = true
+
+dragStart = input.Position
+
+startPos = scroll.Position
+
+input.Changed:Connect(function()  
+
+        if input.UserInputState == Enum.UserInputState.End then  
+
+            dragToggle = false  
+
+        end  
+
+    end)  
+
+end
+
+end)
+
+scroll.InputChanged:Connect(function(input)
+
+if input.UserInputType == Enum.UserInputType.MouseMovement then
+
+dragInput = input
+
+end
+
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+
+if input == dragInput and dragToggle then
+
+updateDrag(input)
+
+end
+
+end)
+
+local UserInputService = game:GetService("UserInputService")
+
+local dragging = false
+
+local dragInput, dragStart, startPos
+
+local function updateDrag(input)
+
+local delta = input.Position - dragStart
+
+scroll.Position = UDim2.new(
+
+startPos.X.Scale,
+
+startPos.X.Offset + delta.X,
+
+startPos.Y.Scale,
+
+startPos.Y.Offset + delta.Y
+
+)
+
+end
+
+title.InputBegan:Connect(function(input)
+
+if input.UserInputType == Enum.UserInputType.MouseButton1 then
+
+dragging = true
+
+dragStart = input.Position
+
+startPos = scroll.Position
+
+input.Changed:Connect(function()  
+
+		if input.UserInputState == Enum.UserInputState.End then  			dragging = false  
+
+		end  
+
+	end)  
+
+end
+
+end)
+
+title.InputChanged:Connect(function(input)
+
+if input.UserInputType == Enum.UserInputType.MouseMovement then
+
+dragInput = input
+
+end
+
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+
+if input == dragInput and dragging then
+
+updateDrag(input)
+
+end
+
+end)
+
+-- TOGGLE BUTTON (BUKA/TUTUP GUI)
+
+local toggleButton = Instance.new("TextButton", mainGui)
+
+toggleButton.Size = UDim2.new(0, 100, 0, 30)
+
+toggleButton.Position = UDim2.new(0, 20, 0, 10)
+
+toggleButton.Text = "🔽 Tutup GUI"
+
+toggleButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+
+toggleButton.TextColor3 = Color3.new(1, 1, 1)
+
+toggleButton.Font = Enum.Font.GothamBold
+
+toggleButton.TextScaled = true
+
+toggleButton.ZIndex = 10
+
+local guiVisible = true
+
+toggleButton.MouseButton1Click:Connect(function()
+
+guiVisible = not guiVisible
+
+scroll.Visible = guiVisible
+
+toggleButton.Text = guiVisible and "🔽 Tutup GUI" or "🔼 Buka GUI"
+
+end)
+
+--== [ INTAST UGC V2 - HIGH CHANCE CLAIM ] ==--
+
+local function intastUGCV2()
+
+	local hrp = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+	local total = 0
+
+	for _, obj in ipairs(game:GetDescendants()) do
+
+		pcall(function()
+
+			if obj:IsA("ProximityPrompt") and obj.Enabled then
+
+				fireproximityprompt(obj)
+
+				total += 1
+
+			elseif obj:IsA("TextButton") and obj.Visible and obj.Text and obj.Text:lower():find("claim") then
+
+				obj:Activate()
+
+				total += 1
+
+			elseif obj:IsA("BasePart") and obj:FindFirstChildOfClass("TouchTransmitter") then
+
+				firetouchinterest(hrp, obj, 0)
+
+				wait(0.05)
+
+				firetouchinterest(hrp, obj, 1)
+
+				total += 1
+
+			elseif obj:IsA("ClickDetector") then
+
+				fireclickdetector(obj)
+
+				total += 1
+
+			end
+
+		end)
+
+	end
+
+	notify("💎 INTAST UGC V2", "Total processed: " .. total)
+
+end
+
+local btnIntast2 = Instance.new("TextButton", scroll)
+
+btnIntast2.Size = UDim2.new(0, 260, 0, 40)
+
+btnIntast2.Position = UDim2.new(0, 20, 0, 550)
+
+btnIntast2.Text = "💎 INTAST UGC V2 (MAX)"
+
+btnIntast2.BackgroundColor3 = Color3.fromRGB(200, 200, 0)
+
+btnIntast2.TextColor3 = Color3.new(0, 0, 0)
+
+btnIntast2.Font = Enum.Font.GothamBold
+
+btnIntast2.TextScaled = true
+
+btnIntast2.MouseButton1Click:Connect(intastUGCV2)
+
+--== [ TELEPORT TO UGC PARTS ] ==--
+
+local function teleportToUGC()
+
+	local hrp = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+	for _, obj in ipairs(workspace:GetDescendants()) do
+
+		if obj:IsA("BasePart") and (
+
+			obj:FindFirstChildOfClass("TouchTransmitter")
+
+			or obj:FindFirstChildOfClass("ClickDetector")
+
+		) then
+
+			hrp.CFrame = obj.CFrame + Vector3.new(0, 3, 0)
+
+			wait(0.3)
+
+		end
+
+	end
+
+	notify("🚀 Teleport Done", "Finished teleporting to UGC parts.")
+
+end
+
+local btnTP = Instance.new("TextButton", scroll)
+
+btnTP.Size = UDim2.new(0, 260, 0, 40)
+
+btnTP.Position = UDim2.new(0, 20, 0, 600)
+
+btnTP.Text = "🚀 TELEPORT TO UGC"
+
+btnTP.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
+
+btnTP.TextColor3 = Color3.new(1, 1, 1)
+
+btnTP.Font = Enum.Font.GothamBold
+
+btnTP.TextScaled = true
+
+btnTP.MouseButton1Click:Connect(teleportToUGC)
+
+--== [ ESP UGC Part Viewer ] ==--
+
+local function createESP(part, name)
+
+	local BillboardGui = Instance.new("BillboardGui")
+
+	BillboardGui.Parent = part
+
+	BillboardGui.Adornee = part
+
+	BillboardGui.Size = UDim2.new(0, 100, 0, 20)
+
+	BillboardGui.AlwaysOnTop = true
+
+	local TextLabel = Instance.new("TextLabel")
+
+	TextLabel.Parent = BillboardGui
+
+	TextLabel.Size = UDim2.new(1, 0, 1, 0)
+
+	TextLabel.Text = name
+
+	TextLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
+
+	TextLabel.BackgroundTransparency = 1
+
+	TextLabel.TextScaled = true
+
+end
+
+local function espUGC()
+
+	local count = 0
+
+	for _, obj in ipairs(workspace:GetDescendants()) do
+
+		if obj:IsA("BasePart") and (
+
+			obj:FindFirstChildOfClass("TouchTransmitter")
+
+			or obj:FindFirstChildOfClass("ClickDetector")
+
+		) and not obj:FindFirstChildWhichIsA("BillboardGui") then
+
+			createESP(obj, "UGC Part")
+
+			count += 1
+
+		end
+
+	end
+
+	notify("👁️ ESP Enabled", count .. " UGC parts marked.")
+
+end
+
+local btnESP = Instance.new("TextButton", scroll)
+
+btnESP.Size = UDim2.new(0, 260, 0, 40)
+
+btnESP.Position = UDim2.new(0, 20, 0, 650)
+
+btnESP.Text = "👁️ ESP UGC PARTS"
+
+btnESP.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+
+btnESP.TextColor3 = Color3.fromRGB(0, 255, 255)
+
+btnESP.Font = Enum.Font.GothamBold
+
+btnESP.TextScaled = true
+
+btnESP.MouseButton1Click:Connect(espUGC)
+
+local function brutalIntastScanner()
+
+	local canClaim = false
+
+	local claimables = {}
+
+	for _, obj in ipairs(game:GetDescendants()) do
+
+		if obj:IsA("TextButton") and obj.Visible and obj.Text and obj.Text:lower():find("claim") then
+
+			table.insert(claimables, obj)
+
+			canClaim = true
+
+		elseif obj:IsA("ProximityPrompt") and obj.Enabled then
+
+			table.insert(claimables, obj)
+
+			canClaim = true
+
+		elseif obj:IsA("BasePart") then
+
+			if obj:FindFirstChildOfClass("TouchTransmitter") or obj:FindFirstChildOfClass("ClickDetector") then
+
+				table.insert(claimables, obj)
+
+				canClaim = true
+
+			end
+
+		end
+
+	end
+
+	if canClaim then
+
+		notify("✅ INTAST UGC Detected!", "Game ini bisa di-claim secara brutal!")
+
+	else
+
+		notify("❌ No UGC Claim Found", "Tidak ada tombol atau sistem UGC yang bisa diakses.")
+
+	end
+
+	-- Brutal claim process
+
+	for _, obj in ipairs(claimables) do
+
+		if obj:IsA("TextButton") then
+
+			pcall(function() obj:Activate() end)
+
+		elseif obj:IsA("ProximityPrompt") then
+
+			pcall(function() fireproximityprompt(obj) end)
+
+		elseif obj:IsA("BasePart") then
+
+			local pos = obj.Position or obj.Parent.Position
+
+			hrp.CFrame = CFrame.new(pos + Vector3.new(0, 3, 0))
+
+			wait(0.1)
+
+			pcall(function()
+
+				if obj:FindFirstChildOfClass("TouchTransmitter") then
+
+					firetouchinterest(hrp, obj, 0)
+
+					wait()
+
+					firetouchinterest(hrp, obj, 1)
+
+				end
+
+				if obj:FindFirstChildOfClass("ClickDetector") then
+
+					fireclickdetector(obj:FindFirstChildOfClass("ClickDetector"))
+
+				end
+
+			end)
+
+		end
+
+	end
+
+end
+
+local btnBrutalScan = Instance.new("TextButton", scroll)
+
+btnBrutalScan.Size = UDim2.new(0, 260, 0, 40)
+
+btnBrutalScan.Position = UDim2.new(0, 20, 0, 550)
+
+btnBrutalScan.Text = "🧠 INTAST SCAN & AUTO BYPASS"
+
+btnBrutalScan.BackgroundColor3 = Color3.fromRGB(0, 255, 200)
+
+btnBrutalScan.TextColor3 = Color3.new(0,0,0)
+
+btnBrutalScan.Font = Enum.Font.GothamBold
+
+btnBrutalScan.TextScaled = true
+
+btnBrutalScan.MouseButton1Click:Connect(brutalIntastScanner)
+
+-- Perpanjang scroll:
+
+scroll.CanvasSize = UDim2.new(0, 0, 6.3, 0)
