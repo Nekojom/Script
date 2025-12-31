@@ -1,0 +1,251 @@
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+
+pcall(function()
+	if player.PlayerGui:FindFirstChild("FightForUGC") then
+		player.PlayerGui.FightForUGC:Destroy()
+	end
+end)
+
+local ScreenGui = Instance.new("ScreenGui", player.PlayerGui)
+ScreenGui.Name = "fierFermboyScript"
+ScreenGui.DisplayOrder = 9999
+ScreenGui.ResetOnSpawn = false
+
+local Main = Instance.new("Frame", ScreenGui)
+Main.Size = UDim2.new(0,330,0,320)
+Main.Position = UDim2.new(0.5,0,0.5,0)
+Main.AnchorPoint = Vector2.new(0.5,0.5)
+Main.BackgroundColor3 = Color3.fromRGB(20,20,20)
+Main.Active = true
+Instance.new("UICorner", Main)
+
+local Top = Instance.new("Frame", Main)
+Top.Size = UDim2.new(1,0,0,30)
+Top.BackgroundColor3 = Color3.fromRGB(30,30,30)
+Top.Active = true
+Instance.new("UICorner", Top)
+
+local Title = Instance.new("TextLabel", Top)
+Title.Size = UDim2.new(1,-20,1,0)
+Title.Position = UDim2.new(0,10,0,0)
+Title.BackgroundTransparency = 1
+Title.Text = "Teamwork Puzzle Obby 2"
+Title.TextColor3 = Color3.fromRGB(220,220,220)
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 12
+Title.TextXAlignment = Enum.TextXAlignment.Left
+
+local dragging, dragStart, startPos
+Top.InputBegan:Connect(function(i)
+	if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = i.Position
+		startPos = Main.Position
+	end
+end)
+
+UserInputService.InputChanged:Connect(function(i)
+	if dragging and (i.UserInputType == Enum.UserInputType.MouseMovement or i.UserInputType == Enum.UserInputType.Touch) then
+		local delta = i.Position - dragStart
+		Main.Position = UDim2.new(
+			startPos.X.Scale,startPos.X.Offset + delta.X,
+			startPos.Y.Scale,startPos.Y.Offset + delta.Y
+		)
+	end
+end)
+
+UserInputService.InputEnded:Connect(function(i)
+	if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
+		dragging = false
+	end
+end)
+
+local Notif = Instance.new("TextLabel", Main)
+Notif.Size = UDim2.new(1,-40,0,24)
+Notif.Position = UDim2.new(0,20,1,-32)
+Notif.BackgroundColor3 = Color3.fromRGB(0,0,0)
+Notif.TextColor3 = Color3.fromRGB(255,255,255)
+Notif.Font = Enum.Font.Gotham
+Notif.TextSize = 12
+Notif.Visible = false
+Instance.new("UICorner", Notif)
+
+local function notify(txt)
+	Notif.Text = txt
+	Notif.Visible = true
+	task.delay(2,function()
+		Notif.Visible = false
+	end)
+end
+
+local function makeButton(text,y)
+	local b = Instance.new("TextButton", Main)
+	b.Size = UDim2.new(1,-40,0,34)
+	b.Position = UDim2.new(0,20,0,y)
+	b.Text = text
+	b.BackgroundColor3 = Color3.fromRGB(0,0,0)
+	b.TextColor3 = Color3.fromRGB(255,255,255)
+	b.Font = Enum.Font.GothamBold
+	b.TextSize = 13
+	Instance.new("UICorner", b)
+	return b
+end
+
+local AutoBtn   = makeButton("AUTO COLLECT MILK : OFF", 50)
+local FlyBtn    = makeButton("FLY : OFF", 90)
+local NoclipBtn = makeButton("NOCLIP : OFF", 130)
+local ClaimBtn  = makeButton("CLAIM UGC", 170)
+
+local flyUp, flyDown = false, false
+
+local UpBtn = Instance.new("TextButton", Main)
+UpBtn.Size = UDim2.new(0,50,0,50)
+UpBtn.Position = UDim2.new(1,-70,1,-160)
+UpBtn.Text = "↑"
+UpBtn.BackgroundColor3 = Color3.fromRGB(0,0,0)
+UpBtn.TextColor3 = Color3.fromRGB(255,255,255)
+UpBtn.Font = Enum.Font.GothamBold
+UpBtn.TextSize = 22
+UpBtn.Visible = false
+Instance.new("UICorner", UpBtn)
+
+local DownBtn = Instance.new("TextButton", Main)
+DownBtn.Size = UDim2.new(0,50,0,50)
+DownBtn.Position = UDim2.new(1,-70,1,-100)
+DownBtn.Text = "↓"
+DownBtn.BackgroundColor3 = Color3.fromRGB(0,0,0)
+DownBtn.TextColor3 = Color3.fromRGB(255,255,255)
+DownBtn.Font = Enum.Font.GothamBold
+DownBtn.TextSize = 22
+DownBtn.Visible = false
+Instance.new("UICorner", DownBtn)
+
+UpBtn.MouseButton1Down:Connect(function() flyUp = true end)
+UpBtn.MouseButton1Up:Connect(function() flyUp = false end)
+DownBtn.MouseButton1Down:Connect(function() flyDown = true end)
+DownBtn.MouseButton1Up:Connect(function() flyDown = false end)
+
+local collecting = false
+
+local function fireTouch(part)
+	local char = player.Character
+	local hrp = char and char:FindFirstChild("HumanoidRootPart")
+	if not hrp then return end
+	firetouchinterest(hrp, part, 0)
+	task.wait()
+	firetouchinterest(hrp, part, 1)
+end
+
+local function scanMilk()
+	if not workspace:FindFirstChild("MilkCollection") then return end
+	for _,map in ipairs(workspace.MilkCollection:GetChildren()) do
+		for _,obj in ipairs(map:GetDescendants()) do
+			if obj:IsA("BasePart") then
+				fireTouch(obj)
+			end
+		end
+	end
+end
+
+AutoBtn.MouseButton1Click:Connect(function()
+	collecting = not collecting
+	AutoBtn.Text = collecting and "AUTO COLLECT MILK : ON" or "AUTO COLLECT MILK : OFF"
+	notify(collecting and "Auto collect enabled" or "Auto collect disabled")
+
+	if collecting then
+		task.spawn(function()
+			while collecting do
+				scanMilk()
+				task.wait(0.4)
+			end
+		end)
+	end
+end)
+
+local flying = false
+local bv, bg, flyConn
+
+FlyBtn.MouseButton1Click:Connect(function()
+	flying = not flying
+	FlyBtn.Text = flying and "FLY : ON" or "FLY : OFF"
+	notify(flying and "Fly enabled" or "Fly disabled")
+
+	local char = player.Character
+	local hrp = char and char:FindFirstChild("HumanoidRootPart")
+	local hum = char and char:FindFirstChildOfClass("Humanoid")
+	if not hrp or not hum then return end
+
+	if flying then
+		hum.AutoJumpEnabled = false
+		UpBtn.Visible = true
+		DownBtn.Visible = true
+
+		bv = Instance.new("BodyVelocity", hrp)
+		bv.MaxForce = Vector3.new(1e6,1e6,1e6)
+
+		bg = Instance.new("BodyGyro", hrp)
+		bg.MaxTorque = Vector3.new(1e6,1e6,1e6)
+		bg.P = 1e4
+
+		flyConn = RunService.RenderStepped:Connect(function()
+			bg.CFrame = workspace.CurrentCamera.CFrame
+			local move = hum.MoveDirection
+			local vel = Vector3.new(move.X*60, 0, move.Z*60)
+
+			if hum.Jump or flyUp then
+				vel += Vector3.new(0,55,0)
+			end
+
+			if flyDown
+			or UserInputService:IsKeyDown(Enum.KeyCode.LeftShift)
+			or UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
+				vel += Vector3.new(0,-55,0)
+			end
+
+			bv.Velocity = vel
+		end)
+	else
+		if flyConn then flyConn:Disconnect() end
+		if bv then bv:Destroy() end
+		if bg then bg:Destroy() end
+		hum.AutoJumpEnabled = true
+		UpBtn.Visible = false
+		DownBtn.Visible = false
+		flyUp, flyDown = false, false
+	end
+end)
+
+local noclip = false
+NoclipBtn.MouseButton1Click:Connect(function()
+	noclip = not noclip
+	NoclipBtn.Text = noclip and "NOCLIP : ON" or "NOCLIP : OFF"
+	notify(noclip and "Noclip enabled" or "Noclip disabled")
+end)
+
+RunService.Stepped:Connect(function()
+	if noclip then
+		local char = player.Character
+		if char then
+			for _,v in ipairs(char:GetDescendants()) do
+				if v:IsA("BasePart") then
+					v.CanCollide = false
+				end
+			end
+		end
+	end
+end)
+
+ClaimBtn.MouseButton1Click:Connect(function()
+	local args = {
+		"ClaimMilk3"
+	}
+	local ok = pcall(function()
+		ReplicatedStorage:WaitForChild("Events"):WaitForChild("debug"):FireServer(unpack(args))
+	end)
+	notify(ok and "UGC claimed" or "Claim failed")
+end)
