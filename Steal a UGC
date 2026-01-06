@@ -1,0 +1,172 @@
+-- ================= SERVICES =================
+local Players = game:GetService("Players")
+local UIS = game:GetService("UserInputService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local lp = Players.LocalPlayer
+
+-- ================= REMOVE OLD UI =================
+pcall(function()
+    local old = lp.PlayerGui:FindFirstChild("NekojomRandomUI")
+    if old then old:Destroy() end
+end)
+
+-- ================= GUI =================
+local gui = Instance.new("ScreenGui")
+gui.Name = "NekojomRandomUI"
+gui.ResetOnSpawn = false
+gui.Parent = lp:WaitForChild("PlayerGui")
+
+local main = Instance.new("Frame")
+main.Size = UDim2.fromOffset(240, 230)
+main.Position = UDim2.fromScale(0.5, 0.5)
+main.AnchorPoint = Vector2.new(0.5, 0.5)
+main.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+main.BackgroundTransparency = 0.1
+main.Parent = gui
+Instance.new("UICorner", main).CornerRadius = UDim.new(0, 16)
+
+local stroke = Instance.new("UIStroke", main)
+stroke.Color = Color3.fromRGB(180, 120, 255)
+stroke.Thickness = 2
+
+-- ================= TITLE =================
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, -20, 0, 34)
+title.Position = UDim2.fromOffset(10, 8)
+title.BackgroundTransparency = 1
+title.Text = "🐱 Nekojom UI"
+title.TextColor3 = Color3.fromRGB(220, 190, 255)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 16
+title.Parent = main
+
+-- ================= BUTTON MAKER =================
+local function makeButton(text, y)
+    local b = Instance.new("TextButton")
+    b.Size = UDim2.new(1, -40, 0, 36)
+    b.Position = UDim2.fromOffset(20, y)
+    b.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
+    b.Text = text
+    b.TextColor3 = Color3.fromRGB(240, 240, 240)
+    b.Font = Enum.Font.GothamMedium
+    b.TextSize = 13
+    b.Parent = main
+    Instance.new("UICorner", b).CornerRadius = UDim.new(0, 12)
+    return b
+end
+
+-- ================= BUTTONS =================
+local instantBtn = makeButton("Instant Touch", 55)
+local autoTouchBtn = makeButton("Auto Touch : OFF", 100)
+local luckyBtn = makeButton("Auto Lucky Block : OFF", 145)
+
+-- ================= TOUCH SYSTEM =================
+local function runTouch()
+    local char = lp.Character or lp.CharacterAdded:Wait()
+    for _, v in ipairs(workspace:GetDescendants()) do
+        if v:IsA("BasePart") and v:FindFirstChildOfClass("TouchTransmitter") then
+            for _, p in ipairs(char:GetDescendants()) do
+                if p:IsA("BasePart") then
+                    firetouchinterest(p, v, 0)
+                    task.wait()
+                    firetouchinterest(p, v, 1)
+                end
+            end
+        end
+    end
+end
+
+-- ================= LUCKY BLOCK =================
+local LuckyNames = {
+    LuckyBlock_Common = true,
+    LuckyBlock_Rare = true,
+    LuckyBlock_Epic = true
+}
+
+local function getHRP()
+    return (lp.Character or lp.CharacterAdded:Wait()):WaitForChild("HumanoidRootPart")
+end
+
+local function pressE()
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+    task.wait(0.1)
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+end
+
+local function collectLucky()
+    for _, m in ipairs(workspace:GetDescendants()) do
+        if m:IsA("Model") and LuckyNames[m.Name] then
+            pcall(function()
+                local part = m:FindFirstChildWhichIsA("BasePart", true)
+                if part then
+                    getHRP().CFrame = part.CFrame * CFrame.new(0, 0, -2)
+                    task.wait(0.25)
+                    pressE()
+                    for _, v in ipairs(m:GetDescendants()) do
+                        if v:IsA("ProximityPrompt") then
+                            fireproximityprompt(v)
+                        end
+                    end
+                end
+            end)
+            task.wait(0.4)
+        end
+    end
+end
+
+-- ================= BUTTON LOGIC =================
+instantBtn.MouseButton1Click:Connect(function()
+    task.spawn(runTouch)
+end)
+
+local autoTouch = false
+autoTouchBtn.MouseButton1Click:Connect(function()
+    autoTouch = not autoTouch
+    autoTouchBtn.Text = autoTouch and "Auto Touch : ON" or "Auto Touch : OFF"
+    task.spawn(function()
+        while autoTouch do
+            runTouch()
+            task.wait(0.25)
+        end
+    end)
+end)
+
+local autoLucky = false
+luckyBtn.MouseButton1Click:Connect(function()
+    autoLucky = not autoLucky
+    luckyBtn.Text = autoLucky and "Auto Lucky Block : ON" or "Auto Lucky Block : OFF"
+    task.spawn(function()
+        while autoLucky do
+            collectLucky()
+            task.wait(1)
+        end
+    end)
+end)
+
+-- ================= DRAG UI =================
+local dragging, startPos, startInput
+main.InputBegan:Connect(function(i)
+    if i.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        startInput = i.Position
+        startPos = main.Position
+    end
+end)
+
+main.InputEnded:Connect(function(i)
+    if i.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+UIS.InputChanged:Connect(function(i)
+    if dragging and i.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = i.Position - startInput
+        main.Position = UDim2.new(
+            startPos.X.Scale,
+            startPos.X.Offset + delta.X,
+            startPos.Y.Scale,
+            startPos.Y.Offset + delta.Y
+        )
+    end
+end)
