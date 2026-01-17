@@ -1,0 +1,817 @@
+local a=game:GetService"Players"
+
+local b=game:GetService"MarketplaceService"
+
+local c=game:GetService"HttpService"
+
+local d=game:GetService"UserInputService"
+
+game:GetService"RunService"
+
+local e=game:GetService"TweenService"
+
+local f=a.LocalPlayer
+
+local g={0}
+
+local h=0.1
+
+local i=false
+
+local function log(j)
+
+print("[FAKEpurchase] "..j)
+
+end
+
+local function randomDelay()
+
+wait(math.random(0.05,0.1))
+
+end
+
+local function spoofAssetOwnership()
+
+pcall(function()
+
+local j;j=hookmetamethod(game,"__index",function(k,l)
+
+for m,n in pairs(g)do
+
+if tostring(k):match"AssetOwnership|Inventory|PlayerData"and l:match"Owned|Items|UGC"then
+
+return{AssetId=n,UserId=f.UserId,Owned=true,Resale=true,Tradeable=true,InstanceId=c:GenerateGUID(false)}
+
+end
+
+end
+
+return j(k,l)
+
+end)
+
+end)
+
+end
+
+local j;j=hookmetamethod(game,"__namecall",function(k,...)
+
+local l={...}
+
+local m=getnamecallmethod()
+
+for n,o in pairs(g)do
+
+if m=="PerformPurchase"and l[2]==o then
+
+return{purchaseId=c:GenerateGUID(false),success=true,assetId=o,resale=true}
+
+end
+
+end
+
+return j(k,...)
+
+end)
+
+local k;k=hookmetamethod(game,"__namecall",function(l,...)
+
+local m={...}
+
+local n=getnamecallmethod()
+
+for o,p in pairs(g)do
+
+if n=="GetProductInfo"and m[1]==p then
+
+return{
+
+AssetId=p,
+
+ProductId=p,
+
+PriceInRobux=0,
+
+IsLimited=true,
+
+IsForSale=true,
+
+IsOwned=true,
+
+ResaleData={Purchased=true,Price=0,InstanceId=c:GenerateGUID(false)}
+
+}
+
+end
+
+end
+
+return k(l,...)
+
+end)
+
+local l;l=hookmetamethod(game,"__namecall",function(m,...)
+
+local n={...}
+
+local o=getnamecallmethod()
+
+for p,q in pairs(g)do
+
+if o=="ProcessReceipt"and n[1]and(n[1].ProductId==q or n[1].AssetId==q)then
+
+return Enum.ProductPurchaseDecision.PurchaseGranted
+
+end
+
+end
+
+return l(m,...)
+
+end)
+
+local m;m=hookmetamethod(game,"__namecall",function(n,...)
+
+local o={...}
+
+local p=getnamecallmethod()
+
+for q,r in pairs(g)do
+
+if(p=="HttpGet"or p=="HttpGetAsync")and o[1]:match"inventory%.roblox%.com"and o[1]:match(tostring(r))then
+
+return c:JSONEncode{
+
+success=true,
+
+owned=true,
+
+assetId=r,
+
+userId=f.UserId,
+
+resale=true,
+
+instanceId=c:GenerateGUID(false)
+
+}
+
+end
+
+end
+
+return m(n,...)
+
+end)
+
+local function fakeGameInventory()
+
+pcall(function()
+
+local n;n=hookmetamethod(game,"__index",function(o,p)
+
+for q,r in pairs(g)do
+
+if tostring(o):match"Inventory|PlayerData|UGCSystem|TradeSystem"and p:match"Items|Inventory|UGC"then
+
+return{[tostring(r)]={id=r,owned=true,resale=true,tradeable=true}}
+
+end
+
+end
+
+return n(o,p)
+
+end)
+
+end)
+
+end
+
+local function simulateUIInteraction()
+
+pcall(function()
+
+for n,o in pairs(f.PlayerGui:GetDescendants())do
+
+if o:IsA"TextButton"or o:IsA"ImageButton"then
+
+if o.Name:lower():match"trade|use|equip|claim"then
+
+if o:IsA"TextButton"then
+
+o.Activated:Fire()
+
+elseif o:IsA"ImageButton"then
+
+o.Activated:Fire()
+
+end
+
+end
+
+end
+
+end
+
+end)
+
+end
+
+local function altPurchaseFlow()
+
+for n,o in pairs(g)do
+
+pcall(function()
+
+local p={
+
+PlayerId=f.UserId,
+
+ProductId=o,
+
+AssetId=o,
+
+CurrencySpent=0,
+
+PurchaseId=c:GenerateGUID(false)
+
+}
+
+if b:ProcessReceipt(p)==Enum.ProductPurchaseDecision.PurchaseGranted then
+
+b:SignalPromptPurchaseFinished(f,o,true)
+
+local q=Instance.new"BindableEvent"
+
+q.Name="InventoryUpdated"
+
+q:Fire(f,{AssetId=o,Owned=true,Resale=true})
+
+simulateUIInteraction()
+
+else
+
+log("ERROR: ProcessReceipt failed for UGC "..o)
+
+end
+
+end)
+
+end
+
+end
+
+local function createCustomUI()
+
+local n=Instance.new"ScreenGui"
+
+n.Name="GrokUltimateUI"
+
+n.ResetOnSpawn=false
+
+n.DisplayOrder=9999
+
+n.IgnoreGuiInset=true
+
+n.ZIndexBehavior=Enum.ZIndexBehavior.Global
+
+n.Parent=f:WaitForChild"PlayerGui"
+
+local o=Instance.new"Frame"
+
+o.Size=UDim2.new(0,340,0,230)
+
+o.Position=UDim2.new(0.5,0,0.5,0)
+
+o.AnchorPoint=Vector2.new(0.5,0.5)
+
+o.BackgroundColor3=Color3.fromRGB(20,20,20)
+
+o.BorderSizePixel=0
+
+o.ClipsDescendants=true
+
+o.Parent=n
+
+local p=Instance.new"UICorner"
+
+p.CornerRadius=UDim.new(0,8)
+
+p.Parent=o
+
+local q=Instance.new"Frame"
+
+q.Size=UDim2.new(1,0,0,30)
+
+q.Position=UDim2.new(0,0,0,0)
+
+q.BackgroundColor3=Color3.fromRGB(30,30,30)
+
+q.BorderSizePixel=0
+
+q.Parent=o
+
+local r=Instance.new"UICorner"
+
+r.CornerRadius=UDim.new(0,8)
+
+r.Parent=q
+
+local s=Instance.new"TextLabel"
+
+s.Size=UDim2.new(1,-34,1,0)
+
+s.Position=UDim2.new(0,10,0,0)
+
+s.BackgroundTransparency=1
+
+s.Text="FAKEpurchase.pxtze"
+
+s.TextColor3=Color3.fromRGB(220,220,220)
+
+s.TextSize=10
+
+s.Font=Enum.Font.GothamBold
+
+s.TextXAlignment=Enum.TextXAlignment.Left
+
+s.Parent=q
+
+local t=Instance.new"TextButton"
+
+t.Size=UDim2.new(0,22,0,22)
+
+t.Position=UDim2.new(1,-28,0.5,-11)
+
+t.BackgroundColor3=Color3.fromRGB(50,50,50)
+
+t.Text="×"
+
+t.TextColor3=Color3.fromRGB(255,255,255)
+
+t.Font=Enum.Font.GothamBold
+
+t.TextSize=14
+
+t.AutoButtonColor=false
+
+t.Parent=q
+
+local u=Instance.new"UICorner"
+
+u.CornerRadius=UDim.new(0,6)
+
+u.Parent=t
+
+local v=Instance.new"Frame"
+
+v.Size=UDim2.new(1,-20,1,-60)
+
+v.Position=UDim2.new(0,10,0,40)
+
+v.BackgroundTransparency=1
+
+v.Parent=o
+
+local w=Instance.new"TextBox"
+
+w.Size=UDim2.new(1,0,0,34)
+
+w.Position=UDim2.new(0,0,0,0)
+
+w.BackgroundColor3=Color3.fromRGB(35,35,35)
+
+w.Text=table.concat(g,",")
+
+w.PlaceholderText="Enter IDs (separated by commas)"
+
+w.TextColor3=Color3.fromRGB(220,220,220)
+
+w.TextSize=13
+
+w.Font=Enum.Font.Gotham
+
+w.ClearTextOnFocus=false
+
+w.Parent=v
+
+local x=Instance.new"UICorner"
+
+x.CornerRadius=UDim.new(0,6)
+
+x.Parent=w
+
+local y=Instance.new"Frame"
+
+y.Size=UDim2.new(1,0,0,36)
+
+y.Position=UDim2.new(0,0,0,44)
+
+y.BackgroundTransparency=1
+
+y.Parent=v
+
+local function makeButton(z,A)
+
+local B=Instance.new"TextButton"
+
+B.Size=UDim2.new(0.32,0,1,0)
+
+B.BackgroundColor3=A
+
+B.Text=z
+
+B.TextColor3=Color3.fromRGB(255,255,255)
+
+B.Font=Enum.Font.GothamBold
+
+B.TextSize=13
+
+B.AutoButtonColor=false
+
+B.Parent=y
+
+local C=Instance.new"UICorner"
+
+C.CornerRadius=UDim.new(0,6)
+
+C.Parent=B
+
+return B
+
+end
+
+local z=makeButton("RUN",Color3.fromRGB(40,40,40))
+
+local A=makeButton("LOOP",Color3.fromRGB(60,60,60))
+
+A.Position=UDim2.new(0.34,0,0,0)
+
+local B=Instance.new"TextBox"
+
+B.Size=UDim2.new(0.32,0,1,0)
+
+B.Position=UDim2.new(0.68,0,0,0)
+
+B.BackgroundColor3=Color3.fromRGB(35,35,35)
+
+B.Text=tostring(h)
+
+B.PlaceholderText="Delay (seconds)"
+
+B.TextColor3=Color3.fromRGB(220,220,220)
+
+B.TextSize=13
+
+B.Font=Enum.Font.Gotham
+
+B.ClearTextOnFocus=false
+
+B.Parent=y
+
+local C=Instance.new"UICorner"
+
+C.CornerRadius=UDim.new(0,6)
+
+C.Parent=B
+
+local D=Instance.new"TextLabel"
+
+D.Size=UDim2.new(1,0,0,86)
+
+D.Position=UDim2.new(0,0,0,86)
+
+D.BackgroundColor3=Color3.fromRGB(30,30,30)
+
+D.Text="STATUS: Ready. Enter IDs to start."
+
+D.TextColor3=Color3.fromRGB(200,200,200)
+
+D.TextSize=12
+
+D.Font=Enum.Font.Gotham
+
+D.TextWrapped=true
+
+D.Parent=v
+
+local E=Instance.new"UICorner"
+
+E.CornerRadius=UDim.new(0,6)
+
+E.Parent=D
+
+local F,G,H
+
+q.InputBegan:Connect(function(I)
+
+if I.UserInputType==Enum.UserInputType.MouseButton1 or I.UserInputType==Enum.UserInputType.Touch then
+
+F=true
+
+G=I.Position
+
+H=o.Position
+
+I.Changed:Connect(function()
+
+if I.UserInputState==Enum.UserInputState.End then
+
+F=false
+
+end
+
+end)
+
+end
+
+end)
+
+d.InputChanged:Connect(function(I)
+
+if F and(I.UserInputType==Enum.UserInputType.MouseMovement or I.UserInputType==Enum.UserInputType.Touch)then
+
+local J=I.Position-G
+
+o.Position=UDim2.new(H.X.Scale,H.X.Offset+J.X,H.Y.Scale,H.Y.Offset+J.Y)
+
+end
+
+end)
+
+local I=false
+
+t.MouseButton1Click:Connect(function()
+
+I=not I
+
+if I then
+
+local J=e:Create(o,TweenInfo.new(0.18,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{Size=UDim2.new(0,200,0,36)})
+
+J:Play()
+
+J.Completed:Wait()
+
+for K,L in pairs(v:GetChildren())do
+
+L.Visible=false
+
+end
+
+else
+
+for J,K in pairs(v:GetChildren())do
+
+K.Visible=true
+
+end
+
+e:Create(o,TweenInfo.new(0.18,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{Size=UDim2.new(0,340,0,230)}):Play()
+
+end
+
+end)
+
+local function updateStatus(J,K)
+
+D.Text="STATUS: "..J
+
+D.TextColor3=K or Color3.fromRGB(200,200,200)
+
+end
+
+w.FocusLost:Connect(function(J)
+
+local K=w.Text or""
+
+local L={}
+
+for M in K:gmatch"%d+"do
+
+table.insert(L,tonumber(M))
+
+end
+
+if#L>0 then
+
+g=L
+
+updateStatus("Updated IDs: "..table.concat(g,", "),Color3.fromRGB(200,200,200))
+
+log("Updated IDs: "..table.concat(g,", "))
+
+else
+
+updateStatus("Invalid IDs",Color3.fromRGB(80,80,80))
+
+log"Invalid IDs"
+
+end
+
+end)
+
+B.FocusLost:Connect(function(J)
+
+local K=B.Text or""
+
+local L=tonumber(K)
+
+if L and L>=0 then
+
+h=L
+
+updateStatus("Updated delay: "..L.." seconds",Color3.fromRGB(200,200,200))
+
+log("Updated delay: "..L.." seconds")
+
+else
+
+updateStatus("Invalid delay (use non-negative number)",Color3.fromRGB(80,80,80))
+
+log"Invalid delay"
+
+end
+
+end)
+
+local function runAssetSequence(J)
+
+for K,L in ipairs(J)do
+
+if not i then break end
+
+pcall(function()
+
+log("Processing ID "..L)
+
+updateStatus("Processing ID: "..L,Color3.fromRGB(150,150,150))
+
+altPurchaseFlow{L}
+
+print("[FAKEpurchase] Completed ID: "..L)
+
+end)
+
+task.wait(h)
+
+end
+
+updateStatus("Completed ("..#J.." IDs)",Color3.fromRGB(200,200,200))
+
+end
+
+altPurchaseFlow=function(J)
+
+local K=J or g
+
+for L,M in pairs(K)do
+
+pcall(function()
+
+local N={
+
+PlayerId=f.UserId,
+
+ProductId=M,
+
+AssetId=M,
+
+CurrencySpent=0,
+
+PurchaseId=c:GenerateGUID(false)
+
+}
+
+if b:ProcessReceipt(N)==Enum.ProductPurchaseDecision.PurchaseGranted then
+
+b:SignalPromptPurchaseFinished(f,M,true)
+
+local O=Instance.new"BindableEvent"
+
+O.Name="InventoryUpdated"
+
+O:Fire(f,{AssetId=M,Owned=true,Resale=true})
+
+simulateUIInteraction()
+
+else
+
+log("ERROR: ProcessReceipt failed for ID "..M)
+
+end
+
+end)
+
+end
+
+end
+
+z.MouseButton1Click:Connect(function()
+
+if#g==0 then
+
+updateStatus("No IDs to run",Color3.fromRGB(80,80,80))
+
+return
+
+end
+
+updateStatus("Running sequentially...",Color3.fromRGB(150,150,150))
+
+spawn(function()
+
+i=true
+
+runAssetSequence(g)
+
+i=false
+
+end)
+
+end)
+
+A.MouseButton1Click:Connect(function()
+
+if#g==0 then
+
+updateStatus("No IDs to loop",Color3.fromRGB(80,80,80))
+
+return
+
+end
+
+i=not i
+
+A.Text=i and"STOP"or"LOOP"
+
+if i then
+
+updateStatus("Starting loop with delay "..h.."s",Color3.fromRGB(150,150,150))
+
+spawn(function()
+
+while i do
+
+runAssetSequence(g)
+
+task.wait(0.5)
+
+end
+
+updateStatus("Stopped looping",Color3.fromRGB(100,100,100))
+
+end)
+
+else
+
+updateStatus("Stopping loop...",Color3.fromRGB(100,100,100))
+
+end
+
+end)
+
+updateStatus("FakePurchase Loaded. Enter IDs to start.",Color3.fromRGB(200,200,200))
+
+end
+
+pcall(function()
+
+createCustomUI()
+
+end)
+
+local n=true
+
+spoofAssetOwnership()
+
+fakeGameInventory()
+
+for o=1,3 do
+
+pcall(function()
+
+altPurchaseFlow()
+
+if not b:UserOwnsAsset(f,g[1])then
+
+n=false
+
+end
+
+end)
+
+randomDelay()
+
+end
+
+if n then
+
+log"SUCCESS: Hook complete! Check in store"
+
+else
+
+log"ERROR: Hook failed! Check log"
+
+end
