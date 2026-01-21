@@ -1,0 +1,24 @@
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local function getHRP()
+    local char = player.Character or player.CharacterAdded:Wait()
+    return char:WaitForChild("HumanoidRootPart")
+end
+
+task.spawn(function()
+    while true do
+        local hrp = getHRP()
+        local folder = workspace:WaitForChild("SpawnParts")
+
+        for _, v in ipairs(folder:GetChildren()) do
+            if v:IsA("BasePart") and v:FindFirstChildWhichIsA("TouchTransmitter", true) then
+                firetouchinterest(hrp, v, 0)
+                task.wait(0.1)
+                firetouchinterest(hrp, v, 1)
+            end
+        end
+
+        task.wait(1)
+    end
+end)
