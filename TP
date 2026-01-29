@@ -1,6 +1,5 @@
 --// SERVICES
 local Players = game:GetService("Players")
-local UIS = game:GetService("UserInputService")
 local lp = Players.LocalPlayer
 
 --// VARIABLES
@@ -8,9 +7,10 @@ local savedCFrame = nil
 local selectedPlayer = nil
 
 --// GUI
-local gui = Instance.new("ScreenGui", lp.PlayerGui)
+local gui = Instance.new("ScreenGui")
 gui.Name = "TP_Player_UI"
 gui.ResetOnSpawn = false
+gui.Parent = lp:WaitForChild("PlayerGui")
 
 local main = Instance.new("Frame", gui)
 main.Size = UDim2.fromOffset(260, 320)
@@ -20,10 +20,9 @@ main.BorderSizePixel = 0
 main.Active = true
 main.Draggable = true
 
-local corner = Instance.new("UICorner", main)
-corner.CornerRadius = UDim.new(0,12)
+Instance.new("UICorner", main).CornerRadius = UDim.new(0,12)
 
---// TITLE
+--// TITLE BAR
 local title = Instance.new("TextLabel", main)
 title.Size = UDim2.new(1,0,0,35)
 title.Text = "TP Player"
@@ -32,16 +31,31 @@ title.TextColor3 = Color3.new(1,1,1)
 title.Font = Enum.Font.GothamBold
 title.TextSize = 14
 
---// TOGGLE
+--// CLOSE BUTTON ❌
+local close = Instance.new("TextButton", title)
+close.Size = UDim2.fromOffset(35,35)
+close.Position = UDim2.new(1,-35,0,0)
+close.Text = "✕"
+close.Font = Enum.Font.GothamBold
+close.TextSize = 18
+close.BackgroundTransparency = 1
+close.TextColor3 = Color3.fromRGB(255,80,80)
+
+close.MouseButton1Click:Connect(function()
+	gui:Destroy()
+end)
+
+--// TOGGLE BUTTON
 local toggle = Instance.new("TextButton", title)
 toggle.Size = UDim2.fromOffset(35,35)
-toggle.Position = UDim2.new(1,-35,0,0)
+toggle.Position = UDim2.new(1,-70,0,0)
 toggle.Text = "-"
 toggle.Font = Enum.Font.GothamBold
 toggle.TextSize = 18
 toggle.BackgroundTransparency = 1
 toggle.TextColor3 = Color3.new(1,1,1)
 
+--// BODY
 local body = Instance.new("Frame", main)
 body.Position = UDim2.fromOffset(0,35)
 body.Size = UDim2.new(1,0,1,-35)
@@ -78,7 +92,6 @@ local function refreshPlayers()
 			end)
 		end
 	end
-
 	task.wait()
 	list.CanvasSize = UDim2.new(0,0,0,layout.AbsoluteContentSize.Y + 5)
 end
@@ -87,7 +100,7 @@ refreshPlayers()
 Players.PlayerAdded:Connect(refreshPlayers)
 Players.PlayerRemoving:Connect(refreshPlayers)
 
---// BUTTONS
+--// BUTTON MAKER
 local function createBtn(text,y)
 	local b = Instance.new("TextButton", body)
 	b.Size = UDim2.fromOffset(240,30)
