@@ -73,7 +73,7 @@ do
 
     local AntiAFKEnabled = false
 
-    Tabs.Misc:AddToggle("AntiAFKToggle", {
+    Tabs.Settings:AddToggle("AntiAFKToggle", {
         Title = "AntiAFK",
         Default = false,
         Description = "กดเพื่อรันสคริปต์",
