@@ -5,8 +5,8 @@ local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/GhostSobe/Library/refs/heads/main/Fluent/InterfaceManager"))()
 
 local Window = Fluent:CreateWindow({
-    Title = "Nekojom | All Scripts",
-    SubTitle = "by jom",
+    Title = "Nekojom | PrivateScript",
+    SubTitle = "By jom",
     TabWidth = 160,
     Size = UDim2.fromOffset(550, 350),
     Acrylic = false,
@@ -16,7 +16,6 @@ local Window = Fluent:CreateWindow({
 
 local Tabs = {
     Home = Window:AddTab({ Title = "Home", Icon = "home" }),
-    Script = Window:AddTab({ Title = "Script", Icon = "rbxassetid://10734907168" }),
     Player = Window:AddTab({ Title = "Player", Icon = "rbxassetid://10747373176" }),
     Misc = Window:AddTab({ Title = "Misc", Icon = "star" }),
     TP = Window:AddTab({ Title = "Teleport", Icon = "rbxassetid://10709775894" }),
@@ -28,9 +27,6 @@ local Options = Fluent.Options
 local Plr = game:GetService("Players")
 local LocalPlr = Plr.LocalPlayer
 local StarterGui = game:GetService("StarterGui")
-
-local Script = {"BonkHub","MaruHub","LemonHub","BlueXHub", "SpeedHubX", "NatHub","Chiyo","Bebas","JinkX","VectorHub","H4xScripts","Zeehub","RedzHub","Eps1llonHub",}
-local Jintab = {"JinkX",}
 
 do
     pcall(function()
@@ -53,123 +49,6 @@ do
         end
     })
     end)
-
-    Tabs.Script:AddSection(" Key / มีคีย์ ")
-
-    local Dropdown = Tabs.Script:AddDropdown("Dropdown", {
-        Title = "Select Scripts",
-        Values = Script,
-        Multi = false,
-        Default = "เลือกสคริปต์",
-    })
-
-    Dropdown:OnChanged(function(Value)
-        Scripts = Value
-    end)
-
-    Tabs.Script:AddButton({
-        Title = "Click To Execute",
-        Description = "กดเพื่อรันสคริปต์",
-        Callback = function()
-            if Scripts == "BonkHub" then
-                getgenv().Key = "BONKHUB-9623288E740C"
-                getgenv().DiscordId = "855388945419993119"
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Toonza555/Project/refs/heads/main/PremiumLoader.lua", true))()
-            elseif Scripts == "MaruHub" then
-                getgenv().Key = "MARU-SC3UI-M6UG-8HMZ-OZ9AL-GGXMW"
-                getgenv().id = "754329983861784588"
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/xshiba/MaruBitkub/main/Mobile.lua"))()
-            elseif Scripts == "LemonHub" then
-                loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/ffdfeadf0af798741806ea404682a938.lua"))();
-            elseif Scripts == "BlueXHub" then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-BlueX/BlueX-Hub/refs/heads/main/Main.lua"))();
-            elseif Scripts == "SpeedHubX" then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))();
-            elseif Scripts == "NatHub" then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/ArdyBotzz/NatHub/refs/heads/master/NatHub.lua"))();
-            elseif Scripts == "Chiyo" then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/kaisenlmao/loader/refs/heads/main/chiyo.lua"))();
-            elseif Scripts == "Bebas" then
-                loadstring(game:HttpGet("https://gist.githubusercontent.com/OmarBinLadek/25e75529e18b38e5d38beab9126fc004/raw/6d1c1c5e0e91373654d2f85ebb65e8221728e26d/freefishit.lua"))();
-            elseif Scripts == "JinkX" then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/stormskmonkey/JinkX/refs/heads/main/Loader.lua"))();
-            elseif Scripts == "VectorHub" then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/AAwful/Vector_Hub/0/v2"))();
-            elseif Scripts == "H4xScripts" then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua", true))()
-            elseif Scripts == "Zeehub" then
-                loadstring(game:HttpGet("https://zuwz.me/Ls-Zee-Hub-HZ"))();
-            elseif Scripts == "RedzHub" then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/tlredz/Scripts/refs/heads/main/main.luau"))()
-            elseif Scripts == "Eps1llonHub" then
-                loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/083f208b2d5d19c6b565190b0d2293c9.lua"))()
-            end
-        end
-    })
-
-    Tabs.Script:AddSection(" ไก่ตัน ")
-
-        local Dropdown = Tabs.Script:AddDropdown("Dropdown", {
-            Title = "Select Scripts",
-            Values = Jintab,
-            Multi = false,
-            Default = "เลือกสคริปต์",
-        })
-
-        --Dropdown:SetValue("four")
-
-        Dropdown:OnChanged(function(Value)
-            Scripts = Value
-        end)
-
-        Tabs.Script:AddButton({
-            Title = "Click To Execute",
-            Description = "กดเพื่อรันสคริปต์",
-            Callback = function()
-                if Scripts == "JinkX" then
-                    getgenv().jinkX = {
-                        ['Fish It'] = {
-                            ['Aura Farmer'] = true, -- ฟาม Aura (ถ้ามีเบ็ด Ghostfinn Rod แล้ว)
-
-                            ['Enabled'] = true,
-                            ['Webhook'] = '', -- ใส่ลิ้ง Webhook ถ้าไม่ใช้ไม่ต้องใส่
-                            
-                            ['Fpsboost'] = false,
-                            ['Fps_Cap'] = true,
-                            ['Fps_Value'] = 300,
-                            ['WhiteScreen'] = false,
-
-                            -- เบ็ดที่จะให้ซื้อ
-                            ['Rods'] = {
-                                'Luck Rod',
-                                'Carbon Rod',
-                                'Grass Rod',
-                                'Demascus Rod',
-                                'Ice Rod',
-                                'Lucky Rod',
-                                'Midnight Rod',
-                                'Steampunk Rod',
-                                'Chrome Rod',
-                                'Astral Rod',
-                            },
-
-                            -- Bobber ที่จะให้ซื้อ
-                            ['Baits'] = {
-                                'Topwater Bait',
-                                'Luck Bait',
-                                'Midnight Bait',
-                                'Nature Bait',
-                                'Chroma Bait',
-                                'Dark Matter Bait',
-                                'Corrupt Bait',
-                                'Aether Bait',
-                            },
-                        },
-                    }
-                    loadstring(game:HttpGet('https://raw.githubusercontent.com/stormskmonkey/JinkX/refs/heads/main/Loader.lua'))();
-                end
-            end
-        })
 
     Tabs.Misc:AddSection(" External ")
 
@@ -413,17 +292,21 @@ end
         end
     })
 
-
-
-    Tabs.TP:AddSection(" Teleport  ")
-
-    Tabs.TP:AddButton({
-        Title = "Teleport To Shop Seeds",
-        Description = "วาปไปที่ขายเมล็ด",
-        Callback = function()
-            LocalPlr.Character.HumanoidRootPart.CFrame = CFrame.new(86.5790176, 2.99999976, -27.0039711, 0.00114052149, -4.75095341e-08, -0.999999344, -1.16310509e-12, 1, -4.75095661e-08, 0.999999344, 5.53487881e-11, 0.00114052149)
+    Tabs.TP:AddToggle("TeleportToggle", {
+        Title = "Teleport",
+        Default = false,
+        Description = "เปิดเพื่อมองเห็นผู้เล่น",
+        Callback = function(state)
+            getgenv().TeleportEnabled = state
+            if state then
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/TP"))();
+                print("Teleport เปิดใช้งานแล้ว")
+            else
+                print("Teleport ปิดการใช้งานแล้ว")
+            end
         end
     })
+
 
 
 SaveManager:SetLibrary(Fluent)
