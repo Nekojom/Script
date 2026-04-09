@@ -109,6 +109,25 @@ do
         end
     })
 
+    local FlyEnabled = false
+
+    Tabs.Misc:AddToggle("FlyToggle", {
+        Title = "Auto Click",
+        Default = false,
+        Description = "กดเพื่อรันสคริปต์",
+        Callback = function(state)
+            FlyEnabled = state
+            if state then
+            
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Auto%20Click"))();
+                print("Fly เปิดใช้งานแล้ว")
+            else
+
+                print("Fly ปิดการใช้งานแล้ว")
+            end
+        end
+    })
+
     Tabs.Misc:AddSection(" Graphics ")
 
     local GraphicsEnabled = false
@@ -219,7 +238,7 @@ do
         end
     })
 
-    Tabs.Player:AddSection(" Modes ")
+    Tabs.Player:AddSection("Modes")
 
     Tabs.Player:AddToggle("InfiniteJumpToggle", {
     Title = "Infinite Jump",
@@ -392,4 +411,3 @@ end
 dragify(logoButton, logoButton)
 
 SaveManager:LoadAutoloadConfig()
-
