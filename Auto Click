@@ -1,7 +1,8 @@
---// Auto Click Script
-local player = game.Players.LocalPlayer
-local mouse = player:GetMouse()
+--// Services
+local Players = game:GetService("Players")
+local VirtualUser = game:GetService("VirtualUser")
 
+local player = Players.LocalPlayer
 local clicking = false
 
 --// GUI
@@ -14,7 +15,7 @@ local frame = Instance.new("Frame")
 frame.Parent = gui
 frame.Size = UDim2.new(0,200,0,120)
 frame.Position = UDim2.new(0.4,0,0.4,0)
-frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
+frame.BackgroundColor3 = Color3.fromRGB(35,35,35)
 frame.Active = true
 frame.Draggable = true
 
@@ -22,8 +23,8 @@ local title = Instance.new("TextLabel")
 title.Parent = frame
 title.Size = UDim2.new(1,0,0,30)
 title.Text = "Auto Click"
-title.TextColor3 = Color3.new(1,1,1)
 title.BackgroundTransparency = 1
+title.TextColor3 = Color3.new(1,1,1)
 title.TextScaled = true
 
 local button = Instance.new("TextButton")
@@ -32,9 +33,9 @@ button.Size = UDim2.new(0.8,0,0.4,0)
 button.Position = UDim2.new(0.1,0,0.45,0)
 button.Text = "Start"
 button.TextScaled = true
-button.BackgroundColor3 = Color3.fromRGB(50,150,50)
+button.BackgroundColor3 = Color3.fromRGB(60,170,60)
 
---// Toggle Click
+--// Toggle
 button.MouseButton1Click:Connect(function()
 	clicking = not clicking
 	
@@ -43,7 +44,7 @@ button.MouseButton1Click:Connect(function()
 		button.BackgroundColor3 = Color3.fromRGB(170,60,60)
 	else
 		button.Text = "Start"
-		button.BackgroundColor3 = Color3.fromRGB(50,150,50)
+		button.BackgroundColor3 = Color3.fromRGB(60,170,60)
 	end
 end)
 
@@ -51,8 +52,10 @@ end)
 task.spawn(function()
 	while true do
 		if clicking then
-			mouse1click()
+			VirtualUser:Button1Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+			task.wait()
+			VirtualUser:Button1Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 		end
-		task.wait(0.05) -- ความเร็วคลิก
+		task.wait(0.05)
 	end
 end)
