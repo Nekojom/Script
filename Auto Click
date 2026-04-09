@@ -11,31 +11,59 @@ gui.Name = "AutoClick_UI"
 gui.ResetOnSpawn = false
 gui.Parent = player:WaitForChild("PlayerGui")
 
+-- ปุ่มเปิด UI หลังซ่อน
+local openButton = Instance.new("TextButton")
+openButton.Parent = gui
+openButton.Size = UDim2.new(0,80,0,30)
+openButton.Position = UDim2.new(0,10,0,200)
+openButton.Text = "OPEN"
+openButton.Visible = false
+openButton.BackgroundColor3 = Color3.fromRGB(50,150,255)
+
+-- Frame หลัก
 local frame = Instance.new("Frame")
 frame.Parent = gui
-frame.Size = UDim2.new(0,200,0,120)
+frame.Size = UDim2.new(0,200,0,130)
 frame.Position = UDim2.new(0.4,0,0.4,0)
 frame.BackgroundColor3 = Color3.fromRGB(35,35,35)
 frame.Active = true
 frame.Draggable = true
 
+-- Title
 local title = Instance.new("TextLabel")
 title.Parent = frame
 title.Size = UDim2.new(1,0,0,30)
 title.Text = "Auto Click"
-title.BackgroundTransparency = 1
 title.TextColor3 = Color3.new(1,1,1)
+title.BackgroundTransparency = 1
 title.TextScaled = true
 
+-- ปุ่มปิดถาวร
+local close = Instance.new("TextButton")
+close.Parent = frame
+close.Size = UDim2.new(0,25,0,25)
+close.Position = UDim2.new(1,-30,0,5)
+close.Text = "X"
+close.BackgroundColor3 = Color3.fromRGB(170,60,60)
+
+-- ปุ่มซ่อน
+local hide = Instance.new("TextButton")
+hide.Parent = frame
+hide.Size = UDim2.new(0,25,0,25)
+hide.Position = UDim2.new(1,-60,0,5)
+hide.Text = "-"
+hide.BackgroundColor3 = Color3.fromRGB(200,200,60)
+
+-- ปุ่ม Start / Stop
 local button = Instance.new("TextButton")
 button.Parent = frame
 button.Size = UDim2.new(0.8,0,0.4,0)
-button.Position = UDim2.new(0.1,0,0.45,0)
+button.Position = UDim2.new(0.1,0,0.5,0)
 button.Text = "Start"
 button.TextScaled = true
 button.BackgroundColor3 = Color3.fromRGB(60,170,60)
 
---// Toggle
+-- Toggle Click
 button.MouseButton1Click:Connect(function()
 	clicking = not clicking
 	
@@ -48,7 +76,24 @@ button.MouseButton1Click:Connect(function()
 	end
 end)
 
---// Auto Click Loop
+-- ซ่อน UI
+hide.MouseButton1Click:Connect(function()
+	frame.Visible = false
+	openButton.Visible = true
+end)
+
+-- เปิด UI
+openButton.MouseButton1Click:Connect(function()
+	frame.Visible = true
+	openButton.Visible = false
+end)
+
+-- กาทิ้ง UI
+close.MouseButton1Click:Connect(function()
+	gui:Destroy()
+end)
+
+-- Auto Click Loop
 task.spawn(function()
 	while true do
 		if clicking then
