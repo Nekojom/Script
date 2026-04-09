@@ -5,6 +5,7 @@ local lp = Players.LocalPlayer
 --// VARIABLES
 local savedCFrame = nil
 local selectedPlayer = nil
+local playerButtons = {}
 
 --// GUI
 local gui = Instance.new("ScreenGui")
@@ -13,134 +14,214 @@ gui.ResetOnSpawn = false
 gui.Parent = lp:WaitForChild("PlayerGui")
 
 local main = Instance.new("Frame", gui)
-main.Size = UDim2.fromOffset(260, 320)
-main.Position = UDim2.fromScale(0.1, 0.2)
-main.BackgroundColor3 = Color3.fromRGB(25,25,25)
+main.Size = UDim2.fromOffset(270,350)
+main.Position = UDim2.fromScale(0.1,0.2)
+main.BackgroundColor3 = Color3.fromRGB(20,20,20)
 main.BorderSizePixel = 0
 main.Active = true
 main.Draggable = true
+Instance.new("UICorner",main).CornerRadius = UDim.new(0,10)
 
-Instance.new("UICorner", main).CornerRadius = UDim.new(0,12)
-
---// TITLE BAR
-local title = Instance.new("TextLabel", main)
+--// TITLE
+local title = Instance.new("TextLabel",main)
 title.Size = UDim2.new(1,0,0,35)
-title.Text = "TP Player"
-title.BackgroundColor3 = Color3.fromRGB(35,35,35)
+title.Text = "⚡ TP Player"
+title.BackgroundColor3 = Color3.fromRGB(30,30,30)
 title.TextColor3 = Color3.new(1,1,1)
 title.Font = Enum.Font.GothamBold
 title.TextSize = 14
 
---// CLOSE BUTTON ❌
-local close = Instance.new("TextButton", title)
+-- CLOSE
+local close = Instance.new("TextButton",title)
 close.Size = UDim2.fromOffset(35,35)
 close.Position = UDim2.new(1,-35,0,0)
 close.Text = "✕"
-close.Font = Enum.Font.GothamBold
-close.TextSize = 18
 close.BackgroundTransparency = 1
 close.TextColor3 = Color3.fromRGB(255,80,80)
+close.Font = Enum.Font.GothamBold
+close.TextSize = 18
 
 close.MouseButton1Click:Connect(function()
 	gui:Destroy()
 end)
 
---// TOGGLE BUTTON
-local toggle = Instance.new("TextButton", title)
+-- TOGGLE
+local toggle = Instance.new("TextButton",title)
 toggle.Size = UDim2.fromOffset(35,35)
 toggle.Position = UDim2.new(1,-70,0,0)
 toggle.Text = "-"
-toggle.Font = Enum.Font.GothamBold
-toggle.TextSize = 18
 toggle.BackgroundTransparency = 1
 toggle.TextColor3 = Color3.new(1,1,1)
+toggle.Font = Enum.Font.GothamBold
+toggle.TextSize = 18
 
---// BODY
-local body = Instance.new("Frame", main)
+-- BODY
+local body = Instance.new("Frame",main)
 body.Position = UDim2.fromOffset(0,35)
 body.Size = UDim2.new(1,0,1,-35)
 body.BackgroundTransparency = 1
 
---// PLAYER LIST
-local list = Instance.new("ScrollingFrame", body)
-list.Size = UDim2.fromOffset(240,160)
-list.Position = UDim2.fromOffset(10,10)
-list.CanvasSize = UDim2.new(0,0,0,0)
-list.ScrollBarImageTransparency = 0.5
+-- SEARCH BOX
+local search = Instance.new("TextBox",body)
+search.Size = UDim2.fromOffset(250,30)
+search.Position = UDim2.fromOffset(10,10)
+search.PlaceholderText = "🔎 Search Player..."
+search.BackgroundColor3 = Color3.fromRGB(35,35,35)
+search.TextColor3 = Color3.new(1,1,1)
+search.Font = Enum.Font.Gotham
+search.TextSize = 13
+Instance.new("UICorner",search)
 
-local layout = Instance.new("UIListLayout", list)
+-- PLAYER LIST
+local list = Instance.new("ScrollingFrame",body)
+list.Size = UDim2.fromOffset(250,150)
+list.Position = UDim2.fromOffset(10,50)
+list.CanvasSize = UDim2.new(0,0,0,0)
+list.ScrollBarThickness = 5
+list.BackgroundTransparency = 1
+
+local layout = Instance.new("UIListLayout",list)
 layout.Padding = UDim.new(0,5)
 
+-- BUTTON STYLE
+local function style(btn)
+	btn.BackgroundColor3 = Color3.fromRGB(45,45,45)
+	btn.TextColor3 = Color3.new(1,1,1)
+	btn.Font = Enum.Font.Gotham
+	btn.TextSize = 13
+	Instance.new("UICorner",btn)
+
+	btn.MouseEnter:Connect(function()
+		btn.BackgroundColor3 = Color3.fromRGB(70,70,70)
+	end)
+
+	btn.MouseLeave:Connect(function()
+		btn.BackgroundColor3 = Color3.fromRGB(45,45,45)
+	end)
+end
+
+-- REFRESH PLAYER LIST
 local function refreshPlayers()
+
 	for _,v in pairs(list:GetChildren()) do
-		if v:IsA("TextButton") then v:Destroy() end
+		if v:IsA("TextButton") then
+			v:Destroy()
+		end
 	end
+
+	playerButtons = {}
 
 	for _,plr in pairs(Players:GetPlayers()) do
 		if plr ~= lp then
-			local btn = Instance.new("TextButton", list)
-			btn.Size = UDim2.fromOffset(220,30)
+
+			local btn = Instance.new("TextButton",list)
+			btn.Size = UDim2.fromOffset(230,28)
 			btn.Text = plr.Name
-			btn.Font = Enum.Font.Gotham
-			btn.TextSize = 12
-			btn.BackgroundColor3 = Color3.fromRGB(45,45,45)
-			btn.TextColor3 = Color3.new(1,1,1)
+
+			style(btn)
 
 			btn.MouseButton1Click:Connect(function()
 				selectedPlayer = plr
-				title.Text = "TP Player : "..plr.Name
+				title.Text = "⚡ TP : "..plr.Name
 			end)
+
+			playerButtons[plr.Name:lower()] = btn
 		end
 	end
+
 	task.wait()
-	list.CanvasSize = UDim2.new(0,0,0,layout.AbsoluteContentSize.Y + 5)
+	list.CanvasSize = UDim2.new(0,0,0,layout.AbsoluteContentSize.Y+5)
+
 end
 
 refreshPlayers()
+
 Players.PlayerAdded:Connect(refreshPlayers)
 Players.PlayerRemoving:Connect(refreshPlayers)
 
---// BUTTON MAKER
+-- SEARCH FUNCTION
+search:GetPropertyChangedSignal("Text"):Connect(function()
+
+	local text = search.Text:lower()
+
+	for name,btn in pairs(playerButtons) do
+		if string.find(name,text) then
+			btn.Visible = true
+		else
+			btn.Visible = false
+		end
+	end
+
+end)
+
+-- BUTTON MAKER
 local function createBtn(text,y)
-	local b = Instance.new("TextButton", body)
-	b.Size = UDim2.fromOffset(240,30)
+
+	local b = Instance.new("TextButton",body)
+	b.Size = UDim2.fromOffset(250,30)
 	b.Position = UDim2.fromOffset(10,y)
 	b.Text = text
-	b.Font = Enum.Font.GothamBold
-	b.TextSize = 13
-	b.BackgroundColor3 = Color3.fromRGB(60,60,60)
-	b.TextColor3 = Color3.new(1,1,1)
+
+	style(b)
+
 	return b
 end
 
-local saveBtn = createBtn("📍 Save Position", 180)
-local tpBtn   = createBtn("⚡ TP To Player", 220)
-local backBtn = createBtn("🔙 Back To Save", 260)
+local saveBtn = createBtn("📍 Save Position",210)
+local tpBtn   = createBtn("⚡ TP To Player",250)
+local backBtn = createBtn("🔙 Back To Save",290)
 
+-- SAVE
 saveBtn.MouseButton1Click:Connect(function()
-	if lp.Character and lp.Character:FindFirstChild("HumanoidRootPart") then
-		savedCFrame = lp.Character.HumanoidRootPart.CFrame
-	end
+
+	local char = lp.Character or lp.CharacterAdded:Wait()
+	local hrp = char:WaitForChild("HumanoidRootPart")
+
+	savedCFrame = hrp.CFrame
+
 end)
 
+-- TP PLAYER
 tpBtn.MouseButton1Click:Connect(function()
-	if selectedPlayer and selectedPlayer.Character and selectedPlayer.Character:FindFirstChild("HumanoidRootPart") then
-		lp.Character.HumanoidRootPart.CFrame =
-			selectedPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,-3)
+
+	if not selectedPlayer then return end
+
+	local char = lp.Character or lp.CharacterAdded:Wait()
+	local hrp = char:WaitForChild("HumanoidRootPart")
+
+	local targetChar = selectedPlayer.Character
+	if targetChar and targetChar:FindFirstChild("HumanoidRootPart") then
+
+		hrp.CFrame =
+			targetChar.HumanoidRootPart.CFrame * CFrame.new(0,0,-3)
+
 	end
+
 end)
 
+-- BACK
 backBtn.MouseButton1Click:Connect(function()
-	if savedCFrame and lp.Character then
-		lp.Character.HumanoidRootPart.CFrame = savedCFrame
-	end
+
+	if not savedCFrame then return end
+
+	local char = lp.Character or lp.CharacterAdded:Wait()
+	local hrp = char:WaitForChild("HumanoidRootPart")
+
+	hrp.CFrame = savedCFrame
+
 end)
 
---// TOGGLE UI
+-- TOGGLE
 local open = true
 toggle.MouseButton1Click:Connect(function()
+
 	open = not open
 	body.Visible = open
-	main.Size = open and UDim2.fromOffset(260,320) or UDim2.fromOffset(260,35)
+
+	main.Size =
+		open and UDim2.fromOffset(270,350)
+		or UDim2.fromOffset(270,35)
+
 	toggle.Text = open and "-" or "+"
+
 end)
