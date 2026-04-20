@@ -90,6 +90,25 @@ do
         end
     })
 
+    local RejoinEnabled = false
+
+    Tabs.Settings:AddToggle("RejoinToggle", {
+        Title = "Rejoin",
+        Default = false,
+        Description = "กดเพื่อรันสคริปต์",
+        Callback = function(state)
+            RejoinEnabled = state
+            if state then
+            
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/Nekojom/Script/refs/heads/main/Rejoin'))();
+                print("Rejoin เปิดใช้งานแล้ว")
+            else
+
+                print("Rejoin ปิดการใช้งานแล้ว")
+            end
+        end
+    })
+
     local infiniteyieldEnabled = false
 
     Tabs.Misc:AddToggle("infiniteyieldToggle", {
