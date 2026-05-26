@@ -1,106 +1,218 @@
 --// Services
 local Players = game:GetService("Players")
 local VirtualUser = game:GetService("VirtualUser")
+local GuiService = game:GetService("GuiService")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
 
 local player = Players.LocalPlayer
 local clicking = false
 
---// GUI
+--// GUI Container
 local gui = Instance.new("ScreenGui")
-gui.Name = "AutoClick_UI"
+gui.Name = "ModernAutoClicker_NoFlicker"
 gui.ResetOnSpawn = false
 gui.Parent = player:WaitForChild("PlayerGui")
 
--- ปุ่มเปิด UI หลังซ่อน
+--// ฟังก์ชันช่วยแต่ง UI
+local function addCorner(parent, radius)
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, radius)
+	corner.Parent = parent
+end
+
+local function addStroke(parent, color, thickness)
+	local stroke = Instance.new("UIStroke")
+	stroke.Color = color
+	stroke.Thickness = thickness
+	stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	stroke.Parent = parent
+end
+
+--=========================================
+-- [1] ปุ่มเปิด UI หลังซ่อน (OPEN BUTTON)
+--=========================================
 local openButton = Instance.new("TextButton")
 openButton.Parent = gui
-openButton.Size = UDim2.new(0,80,0,30)
-openButton.Position = UDim2.new(0,10,0,200)
+openButton.Size = UDim2.new(0, 90, 0, 35)
+openButton.Position = UDim2.new(0, 15, 0, 200)
 openButton.Text = "OPEN"
+openButton.Font = Enum.Font.GothamBold
+openButton.TextSize = 14
+openButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+openButton.BackgroundColor3 = Color3.fromRGB(0, 132, 255)
 openButton.Visible = false
-openButton.BackgroundColor3 = Color3.fromRGB(50,150,255)
+addCorner(openButton, 8)
+addStroke(openButton, Color3.fromRGB(0, 100, 200), 1)
 
--- Frame หลัก
+--=========================================
+-- [2] หน้าต่างหลัก (MAIN FRAME)
+--=========================================
 local frame = Instance.new("Frame")
 frame.Parent = gui
-frame.Size = UDim2.new(0,200,0,130)
-frame.Position = UDim2.new(0.4,0,0.4,0)
-frame.BackgroundColor3 = Color3.fromRGB(35,35,35)
-frame.Active = true
-frame.Draggable = true
+frame.Size = UDim2.new(0, 260, 0, 160)
+frame.Position = UDim2.new(0.5, -130, 0.4, -80)
+frame.BackgroundColor3 = Color3.fromRGB(25, 25, 28)
+addCorner(frame, 12)
+addStroke(frame, Color3.fromRGB(45, 45, 50), 1.5)
 
--- Title
+-- บาร์ด้านบนสำหรับลาก (Top Bar)
+local topBar = Instance.new("Frame")
+topBar.Parent = frame
+topBar.Size = UDim2.new(1, 0, 0, 35)
+topBar.BackgroundTransparency = 1
+
+-- หัวข้อ (Title)
 local title = Instance.new("TextLabel")
-title.Parent = frame
-title.Size = UDim2.new(1,0,0,30)
-title.Text = "Auto Click"
-title.TextColor3 = Color3.new(1,1,1)
+title.Parent = topBar
+title.Size = UDim2.new(1, -70, 1, 0)
+title.Position = UDim2.new(0, 15, 0, 0)
+title.Text = "⚡ AUTO CLICKER"
+title.Font = Enum.Font.GothamBold
+title.TextColor3 = Color3.fromRGB(240, 240, 240)
+title.TextSize = 14
+title.TextXAlignment = Enum.TextXAlignment.Left
 title.BackgroundTransparency = 1
-title.TextScaled = true
 
--- ปุ่มปิดถาวร
-local close = Instance.new("TextButton")
-close.Parent = frame
-close.Size = UDim2.new(0,25,0,25)
-close.Position = UDim2.new(1,-30,0,5)
-close.Text = "X"
-close.BackgroundColor3 = Color3.fromRGB(170,60,60)
-
--- ปุ่มซ่อน
+-- ปุ่มซ่อนหน้าต่าง (-)
 local hide = Instance.new("TextButton")
-hide.Parent = frame
-hide.Size = UDim2.new(0,25,0,25)
-hide.Position = UDim2.new(1,-60,0,5)
-hide.Text = "-"
-hide.BackgroundColor3 = Color3.fromRGB(200,200,60)
+hide.Parent = topBar
+hide.Size = UDim2.new(0, 22, 0, 22)
+hide.Position = UDim2.new(1, -55, 0.5, -11)
+hide.Text = "−"
+hide.Font = Enum.Font.GothamBold
+hide.TextSize = 14
+hide.TextColor3 = Color3.fromRGB(200, 200, 200)
+hide.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+addCorner(hide, 6)
 
--- ปุ่ม Start / Stop
+-- ปุ่มปิดถาวร (X)
+local close = Instance.new("TextButton")
+close.Parent = topBar
+close.Size = UDim2.new(0, 22, 0, 22)
+close.Position = UDim2.new(1, -27, 0.5, -11)
+close.Text = "×"
+close.Font = Enum.Font.GothamBold
+close.TextSize = 16
+close.TextColor3 = Color3.fromRGB(255, 100, 100)
+close.BackgroundColor3 = Color3.fromRGB(50, 30, 30)
+addCorner(close, 6)
+
+--=========================================
+-- [3] ปุ่มกดใช้งาน (START / STOP BUTTON)
+--=========================================
 local button = Instance.new("TextButton")
 button.Parent = frame
-button.Size = UDim2.new(0.8,0,0.4,0)
-button.Position = UDim2.new(0.1,0,0.5,0)
-button.Text = "Start"
-button.TextScaled = true
-button.BackgroundColor3 = Color3.fromRGB(60,170,60)
+button.Size = UDim2.new(0.9, 0, 0, 50)
+button.Position = UDim2.new(0.05, 0, 0, 80)
+button.Text = "START CLICKING"
+button.Font = Enum.Font.GothamBold
+button.TextSize = 16
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.BackgroundColor3 = Color3.fromRGB(0, 180, 110)
+addCorner(button, 10)
+addStroke(button, Color3.fromRGB(0, 140, 80), 1)
 
--- Toggle Click
+--=========================================
+-- 🛠️ LOGIC BUTTONS
+--=========================================
+local function updateButtonState()
+	if clicking then
+		button.Text = "STOP CLICKING"
+		button.BackgroundColor3 = Color3.fromRGB(220, 50, 70)
+		if button:FindFirstChild("UIStroke") then
+			button.UIStroke.Color = Color3.fromRGB(170, 30, 50)
+		end
+	else
+		button.Text = "START CLICKING"
+		button.BackgroundColor3 = Color3.fromRGB(0, 180, 110)
+		if button:FindFirstChild("UIStroke") then
+			button.UIStroke.Color = Color3.fromRGB(0, 140, 80)
+		end
+	end
+end
+
 button.MouseButton1Click:Connect(function()
 	clicking = not clicking
-	
-	if clicking then
-		button.Text = "Stop"
-		button.BackgroundColor3 = Color3.fromRGB(170,60,60)
-	else
-		button.Text = "Start"
-		button.BackgroundColor3 = Color3.fromRGB(60,170,60)
-	end
+	updateButtonState()
+	GuiService.SelectedObject = nil
 end)
 
--- ซ่อน UI
 hide.MouseButton1Click:Connect(function()
 	frame.Visible = false
 	openButton.Visible = true
+	GuiService.SelectedObject = nil
 end)
 
--- เปิด UI
 openButton.MouseButton1Click:Connect(function()
 	frame.Visible = true
 	openButton.Visible = false
+	GuiService.SelectedObject = nil
 end)
 
--- กาทิ้ง UI
 close.MouseButton1Click:Connect(function()
+	clicking = false
 	gui:Destroy()
 end)
 
--- Auto Click Loop
+frame.SelectionImageObject = Instance.new("Frame")
+button.SelectionImageObject = Instance.new("Frame")
+
+--=========================================
+-- 🛸 ระบบลากหน้าต่างแบบสมูท (Smooth Drag)
+--=========================================
+local dragging, dragInput, dragStart, startPos
+local function updateDrag(input)
+	local delta = input.Position - dragStart
+	local tween = TweenService:Create(frame, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+		Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	})
+	tween:Play()
+end
+
+topBar.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = input.Position
+		startPos = frame.Position
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+topBar.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+		dragInput = input
+	end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		updateDrag(input)
+	end
+end)
+
+--=========================================
+-- ⏰ LOOPS: สั่งคลิกหนีมุมจอ (แก้ชื่อคนอื่นกระพริบ)
+--=========================================
 task.spawn(function()
+	VirtualUser:CaptureController()
+	
 	while true do
 		if clicking then
-			VirtualUser:Button1Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-			task.wait()
-			VirtualUser:Button1Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+			-- ย้ายพิกัดจาก (0,0) กึ่งกลางจอ ไปเป็น (10,10) มุมซ้ายบนสุดของจอเกมแทน เพื่อไม่ให้โดนตัวละครตัวอื่น
+			local targetPos = Vector2.new(10, 10)
+			
+			VirtualUser:Button1Down(targetPos, workspace.CurrentCamera.CFrame)
+			task.wait(0.01)
+			VirtualUser:Button1Up(targetPos, workspace.CurrentCamera.CFrame)
+			
+			task.wait(0.05)
+		else
+			task.wait(0.2)
 		end
-		task.wait(0.05)
 	end
 end)
