@@ -42,7 +42,7 @@ do
             setclipboard("https://discord.gg/yt-rocket")
             StarterGui:SetCore("SendNotification", {
                 Title = "System",
-                Icon = "rbxassetid://86373171106525",
+                Icon = "rbxassetid://117603679845283",
                 Text = "ได้คัดลอกลิ้งค์ไปยังคีบอร์ดของคุณแล้ว",
                 Duration = 4,
             })
